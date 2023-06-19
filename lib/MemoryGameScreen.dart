@@ -118,9 +118,13 @@ class _MemoryGameScreenState extends State<MemoryGameScreen>
 
   int generateRandomNumber(int digits) {
     final random = Random();
-    final min = pow(10, digits - 1);
-    final max = pow(10, digits) - 1;
-    return (min + random.nextInt((max - min).toInt())).toInt();
+    final buffer = StringBuffer();
+    for (int i = 0; i < digits; i++) {
+      final digit = random.nextInt(10);
+      buffer.write(digit);
+    }
+    print(buffer);
+    return int.parse(buffer.toString());
   }
 
   @override
@@ -142,7 +146,7 @@ class _MemoryGameScreenState extends State<MemoryGameScreen>
             if (showNumber)
               Text(
                 currentNumber.toString(),
-                style: TextStyle(fontSize: 48),
+                style: TextStyle(fontSize: calculateFontSize(currentNumber)),
               ),
             if (!showNumber)
               TextField(
@@ -178,5 +182,15 @@ class _MemoryGameScreenState extends State<MemoryGameScreen>
         ),
       ),
     );
+  }
+
+  calculateFontSize(int number) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final maxLength = number.toString().length;
+
+    // Calculate the optimal font size based on the screen width and number of digits
+    final fontSize = min(screenWidth / maxLength, 48);
+
+    return fontSize;
   }
 }
