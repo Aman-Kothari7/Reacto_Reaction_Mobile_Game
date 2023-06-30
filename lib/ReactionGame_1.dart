@@ -4,16 +4,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
 
-class ReactionGameScreen extends StatefulWidget {
+class ReactionGameScreen1 extends StatefulWidget {
   final Function(int) updateBestReactionTime;
 
-  const ReactionGameScreen({super.key, required this.updateBestReactionTime});
+  const ReactionGameScreen1({super.key, required this.updateBestReactionTime});
 
   @override
-  _ReactionGameScreenState createState() => _ReactionGameScreenState();
+  _ReactionGameScreen1State createState() => _ReactionGameScreen1State();
 }
 
-class _ReactionGameScreenState extends State<ReactionGameScreen> {
+class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
   List<bool> showCircle = [false, false, false];
   int circleIndex = 0;
   bool changeColors = false;
@@ -57,10 +57,12 @@ class _ReactionGameScreenState extends State<ReactionGameScreen> {
       } else {
         for (int i = 0; i < showCircle.length; i++) {
           if (!showCircle[i]) {
-            setState(() {
-              showCircle[i] = true;
-            });
-            break;
+            if (mounted) {
+              setState(() {
+                showCircle[i] = true;
+              });
+              break;
+            }
           }
         }
       }

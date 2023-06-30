@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'MemoryGameScreen.dart';
-import 'ReactionGameScreen.dart';
+import 'package:test_game/ReactionGame_2.dart';
+import 'package:test_game/ReactionGame_3.dart';
+import 'ReactionGame_1.dart';
 
 void main() {
   runApp(GameApp());
@@ -19,7 +19,7 @@ class GameApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MenuScreen(),
+      home: const MenuScreen(),
     );
   }
 }
@@ -33,28 +33,55 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   late final Function(int) updateBestReactionTime;
-  late final Function(int) updateBestMemoryLevel;
+  late final Function(int) updateBestReactionTime2;
+  late final Function(int) updateBestReactionScore3;
+
   int? bestReactionTime;
-  int highestLevel = 0;
+  int? bestReactionTime2;
+  int? bestReactionScore3;
+  int aggregateScore = 0;
 
   @override
   void initState() {
     super.initState();
     loadBestReactionTime();
-    loadHighestMemoryLevel();
+    loadBestReactionTime2();
+    loadBestReactionScore3();
   }
 
   void loadBestReactionTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       bestReactionTime = prefs.getInt('bestReactionTime') ?? 0;
+      updateAggregateScore();
     });
   }
 
-  void loadHighestMemoryLevel() async {
+  void loadBestReactionTime2() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      highestLevel = prefs.getInt('highestLevel') ?? 0;
+      bestReactionTime2 = prefs.getInt('bestReactionTime2') ?? 0;
+      updateAggregateScore();
+    });
+  }
+
+  void loadBestReactionScore3() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      bestReactionScore3 = prefs.getInt('bestReactionScore3') ?? 0;
+      updateAggregateScore();
+    });
+  }
+
+  void updateAggregateScore() {
+    double totalScore = ((10000 / (bestReactionTime ?? 1)) +
+        (10000 / (bestReactionTime2 ?? 1)) +
+        (bestReactionScore3 ?? 0));
+
+    double aggregateScore = (totalScore / 3) * 100;
+
+    setState(() {
+      this.aggregateScore = aggregateScore.round();
     });
   }
 
@@ -73,19 +100,20 @@ class _MenuScreenState extends State<MenuScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ReactionGameScreen(
+                      builder: (context) => ReactionGameScreen1(
                             updateBestReactionTime: (newBestReactionTime) {
                               setState(() {
                                 bestReactionTime = newBestReactionTime;
+                                updateAggregateScore();
                               });
                             },
                           )),
                 );
               },
-              child: Text('Reaction Game'),
+              child: Text('Reaction Game 1'),
             ),
             Text(
-              'Best Reaction Time: ${bestReactionTime.toString()} ms',
+              'Best: ${bestReactionTime.toString()} ms',
               style: TextStyle(fontSize: 16),
             ),
             ElevatedButton(
@@ -93,20 +121,48 @@ class _MenuScreenState extends State<MenuScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MemoryGameScreen(
-                        updateBestMemoryScore: (newBestMemoryScore) {
-                      setState(() {
-                        highestLevel = newBestMemoryScore;
-                      });
-                    }),
+                    builder: (context) => ReactionGameScreen2(
+                      updateBestReactionTime2: (newBestReactionTime2) {
+                        setState(() {
+                          bestReactionTime2 = newBestReactionTime2;
+                          updateAggregateScore();
+                        });
+                      },
+                    ),
                   ),
                 );
               },
-              child: Text('Memory Game'),
+              child: const Text('Reaction Game 2'),
             ),
             Text(
-              'Best Memory Score: ${highestLevel.toString()} digits',
+              'Best: ${bestReactionTime2.toString()} ms',
               style: TextStyle(fontSize: 16),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ReactionGameScreen3(
+                      updateBestReactionScore3: (newBestReactionScore3) {
+                        setState(() {
+                          bestReactionScore3 = newBestReactionScore3;
+                          updateAggregateScore();
+                        });
+                      },
+                    ),
+                  ),
+                );
+              },
+              child: const Text('Reaction Game 3'),
+            ),
+            Text(
+              'Best: ${bestReactionScore3.toString()} score',
+              style: TextStyle(fontSize: 16),
+            ),
+            Text(
+              'Aggregate Score: $aggregateScore',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ],
         ),
