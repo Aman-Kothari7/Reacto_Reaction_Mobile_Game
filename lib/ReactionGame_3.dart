@@ -16,7 +16,7 @@ class ReactionGameScreen3 extends StatefulWidget {
 class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
   int score = 0;
   Timer? timer;
-  int secondsLeft = 30;
+  int secondsLeft = 20;
   int? currentColoredIndex;
   List<bool> isColoredList = List.generate(12, (index) => false);
   int bestReactionScore3 = 0;
@@ -98,7 +98,7 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
               onPressed: () {
                 setState(() {
                   score = 0;
-                  secondsLeft = 30;
+                  secondsLeft = 20;
                 });
                 startGame();
                 Navigator.of(context).pop();
@@ -124,55 +124,107 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Whack-a-Mole Game'),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Score: $score',
-                  style: TextStyle(fontSize: 20),
-                ),
-                SizedBox(width: 20),
-                Text(
-                  'Time: $secondsLeft',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+            color: Colors.black,
+          ),
+          title: Text(
+            'SPEED',
+            style: TextStyle(
+              color: Colors.black,
             ),
           ),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 3,
-              children: List.generate(12, (index) {
-                return GestureDetector(
-                  onTap: () => onTapCircle(index),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2.0,
+          centerTitle: true,
+          backgroundColor: Colors.white,
+        ),
+        body: Column(
+          children: [
+            Container(
+              // height: screenHeight * 0.23,
+              // width: screenWidth,
+              padding: EdgeInsets.all(16.0),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 16.0),
+                  Text(
+                    '1. Tap the red circles as fast as possible',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  SizedBox(height: 10.0),
+                  Text(
+                    '2. You have 20 seconds',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    //textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 10.0),
+                  Text(
+                    '3. React quickly!',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    //textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Score: $score',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(width: 20),
+                  Text(
+                    'Time: $secondsLeft',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 3,
+                children: List.generate(12, (index) {
+                  return GestureDetector(
+                    onTap: () => onTapCircle(index),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 2.0,
+                        ),
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: isColoredList[index]
+                            ? Colors.red
+                            : Colors.transparent,
+                        radius: 50,
                       ),
                     ),
-                    child: CircleAvatar(
-                      backgroundColor: isColoredList[index]
-                          ? Colors.red
-                          : Colors.transparent,
-                      radius: 50,
-                    ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

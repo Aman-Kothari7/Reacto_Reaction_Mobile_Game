@@ -25,6 +25,7 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
   Timer? colorTimer;
   int? bestReactionTime2;
   int? storeReactionTimeInInt;
+  bool gameEnded = false;
 
   @override
   void initState() {
@@ -50,20 +51,24 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
       stopColorTimer();
       if (screenColor == Colors.green) {
         stopwatch.stop();
-        print(bestReactionTime2);
+        //print(bestReactionTime2);
         reactionTime = stopwatch.elapsed;
         storeReactionTimeInInt = reactionTime!.inMilliseconds;
         //resetGame();
-        print(storeReactionTimeInInt);
+        //print(storeReactionTimeInInt);
 
         if (bestReactionTime2 == null ||
             storeReactionTimeInInt! < bestReactionTime2! ||
             bestReactionTime2 == 0) {
           bestReactionTime2 = reactionTime!.inMilliseconds;
           storeBestReactionTime(bestReactionTime2!);
-          print(bestReactionTime2);
+          //print(bestReactionTime2);
           widget.updateBestReactionTime2(bestReactionTime2!);
         }
+
+        setState(() {
+          gameEnded = true; // Set game ended state to true
+        });
       } else {
         resetGame();
         showDialog(
@@ -90,6 +95,17 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
         isPressed = false;
       });
     }
+  }
+
+  void resetGame() {
+    stopColorTimer();
+    stopwatch.reset();
+    reactionTime = null;
+    setState(() {
+      screenColor = Colors.grey;
+      isPressed = false;
+      gameEnded = false; // Reset game ended state
+    });
   }
 
   void storeBestReactionTime(int bestReactionTime2) async {
@@ -125,50 +141,104 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
     }
   }
 
-  void resetGame() {
-    stopColorTimer();
-    stopwatch.reset();
-    reactionTime = null;
-    setState(() {
-      screenColor = Colors.grey;
-      isPressed = false;
-    });
-  }
-
   Color _getRandomConfusingColor() {
     return confusingColors[Random().nextInt(confusingColors.length)];
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => startGame(),
-      onTapUp: (_) => stopGame(),
+    return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Reaction Time Game'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Container(
-                  color: screenColor,
-                  child: Center(
-                    child: Text(
-                      isPressed
-                          ? 'Release on Green'
-                          : reactionTime != null
-                              ? 'Reaction Time: ${reactionTime!.inMilliseconds} ms'
-                              : 'Press and Hold',
-                      style: TextStyle(fontSize: 24, color: Colors.white),
-                    ),
-                  ),
+        body: GestureDetector(
+          onTapDown: (_) => startGame(),
+          onTapUp: (_) => stopGame(),
+          child: Scaffold(
+            appBar: AppBar(
+              leading: BackButton(
+                color: Colors.white,
+              ),
+              title: Text(
+                'COLOR',
+                style: TextStyle(
+                  color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 16),
-            ],
+              centerTitle: true,
+              backgroundColor: Colors.black,
+            ),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    color: screenColor,
+                    // height: screenHeight * 0.23,
+                    // width: screenWidth,
+                    padding: EdgeInsets.all(16.0),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 16.0),
+                        Text(
+                          '1. Hold screen -> wait for color change ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        SizedBox(height: 10.0),
+                        Text(
+                          '2. Leave screen -> as soon as screen color is green',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          //textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 10.0),
+                        Text(
+                          '3. React quickly!',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          //textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      color: screenColor,
+                      child: Center(
+                        child: Text(
+                          isPressed
+                              ? 'Release on Green'
+                              : reactionTime != null
+                                  ? 'Reaction Time: ${reactionTime!.inMilliseconds} ms'
+                                  : 'Press and Hold',
+                          style: TextStyle(fontSize: 24, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                  gameEnded
+                      ? IconButton(
+                          icon: const Icon(Icons.refresh),
+                          onPressed: resetGame,
+                          tooltip: 'Restart Game',
+                          iconSize: 40,
+                        )
+                      : SizedBox(),
+
+                  // const SizedBox(height: 16),
+                ],
+              ),
+            ),
           ),
         ),
       ),

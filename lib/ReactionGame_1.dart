@@ -23,6 +23,7 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
   bool gameInProgress = true;
   Timer? circlesTimer;
   int? bestReactionTime;
+  bool gameEnded = false;
 
   @override
   void initState() {
@@ -37,7 +38,22 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
     super.dispose();
   }
 
+  void restartGame() {
+    setState(() {
+      showCircle = [false, false, false];
+      changeColors = false;
+      colorChangeTime = null;
+      tapTime = null;
+      reactionTime = null;
+      gameInProgress = true;
+    });
+    startShowingCircles();
+  }
+
   void startShowingCircles() {
+    setState(() {
+      gameEnded = false;
+    });
     Timer.periodic(Duration(seconds: 1), (timer) {
       if (!gameInProgress) {
         timer.cancel(); // Stop the timer if game is no longer in progress
@@ -121,34 +137,117 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
         },
       );
     }
+    if (reactionTime != null) {
+      setState(() {
+        gameEnded = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Reaction Time Game'),
-      ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: handleTap,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+    // double screenHeight = MediaQuery.of(context).size.height;
+    // double screenWidth = MediaQuery.of(context).size.width;
+    // ;
+
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+            color: Colors.black,
+          ),
+          title: Text(
+            'LIGHTS',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.white,
+        ),
+        body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: handleTap,
+          child: Stack(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (showCircle[0]) _buildCircle(changeColors),
-                  if (showCircle[1]) _buildCircle(changeColors),
-                  if (showCircle[2]) _buildCircle(changeColors),
-                ],
-              ),
-              if (reactionTime != null)
-                Text(
-                  'Reaction Time: ${reactionTime} ms',
-                  style: TextStyle(fontSize: 20),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Container(
+                  // height: screenHeight * 0.23,
+                  // width: screenWidth,
+                  padding: EdgeInsets.all(16.0),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 16.0),
+                      Text(
+                        '1. Wait for the lights to change color',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(height: 10.0),
+                      Text(
+                        '2. Tap the screen as quickly as possible',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        //textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10.0),
+                      Text(
+                        '3. Your reaction time will be displayed below',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        //textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (showCircle[0]) _buildCircle(changeColors),
+                        if (showCircle[1]) _buildCircle(changeColors),
+                        if (showCircle[2]) _buildCircle(changeColors),
+                      ],
+                    ),
+                    if (reactionTime != null)
+                      Text(
+                        'Reaction Time: ${reactionTime} ms',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                  ],
+                ),
+              ),
+              if (gameEnded)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 80,
+                  child: IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: restartGame,
+                    tooltip: 'Restart Game',
+                    iconSize: 40,
+                  ),
+                )
             ],
           ),
         ),
