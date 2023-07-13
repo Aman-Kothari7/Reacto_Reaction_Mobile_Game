@@ -72,22 +72,61 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
       } else {
         resetGame();
         showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Invalid Release'),
-              content: const Text(
-                  'Only release when the screen turns green to calculate reaction time.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Return'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.pop(context);
-                  },
-                ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              title: Text('INVALID RELEASE', textAlign: TextAlign.center),
+              content: Text('Only release when the screen turns green!',
+                  textAlign: TextAlign.center),
+              actions: [
+                Center(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.pop(context);
+                      },
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                      ),
+                      child: Text(
+                        'Exit',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
               ],
             );
+
+            // AlertDialog(
+            //   title: const Text('Invalid Release'),
+            //   content: const Text(
+            //       'Only release when the screen turns green to calculate reaction time.'),
+            //   actions: <Widget>[
+            //     TextButton(
+            //       child: Text('Return'),
+            //       onPressed: () {
+            //         Navigator.of(context).pop();
+            //         Navigator.pop(context);
+            //       },
+            //     ),
+            //   ],
+            // );
           },
         );
       }

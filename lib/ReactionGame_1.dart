@@ -116,21 +116,44 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
       });
     } else if (mounted && changeColors == false && colorChangeTime == null) {
       showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Invalid Tap'),
-            content: Text('Wait for the lights to change color'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            title: Text('INVALID TAP', textAlign: TextAlign.center),
+            content: Text('Wait for the lights to change color',
+                textAlign: TextAlign.center),
             actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  setState(() {
-                    gameInProgress = false; // End the game
-                  });
-                  Navigator.pop(context);
-                },
-                child: Text('Return'),
+              Center(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      setState(() {
+                        gameInProgress = false; // End the game
+                      });
+                      Navigator.pop(context);
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.black),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                      ),
+                    ),
+                    child: Text(
+                      'Exit',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
               )
             ],
           );

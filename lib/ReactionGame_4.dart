@@ -94,12 +94,14 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Invalid Tap'),
-            content: Text('Wait for the beep sound'),
+            title: Text('Invalid Tap', textAlign: TextAlign.center),
+            content:
+                Text('Wait for the beep sound', textAlign: TextAlign.center),
             actions: [
-              Row(
-                children: [
-                  TextButton(
+              Center(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                       setState(() {
@@ -109,9 +111,22 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
                       });
                       Navigator.pop(context);
                     },
-                    child: Text('Exit'),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(Colors.black),
+                    ),
+                    child: Text(
+                      'Exit',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                ],
+                ),
               )
             ],
           );
@@ -141,6 +156,8 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -164,7 +181,7 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
                 // height: screenHeight * 0.23,
                 // width: screenWidth,
                 padding: EdgeInsets.all(16.0),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: 16.0),
@@ -197,6 +214,24 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
                       ),
                       //textAlign: TextAlign.center,
                     ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    if (!gameEnded)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.volume_up,
+                            color: Colors.grey,
+                            size: 100,
+                          ),
+                          Text(
+                            'Sound On',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      )
                   ],
                 ),
               ),
@@ -211,8 +246,9 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
                         '$countdown',
                         style: TextStyle(fontSize: 60, color: Colors.grey),
                       ),
-                    if (beepTime != null && reactionTime == null)
-                      Text('Beep! Tap the screen as fast as you can!'),
+
+                    // if (beepTime != null && reactionTime == null)
+                    //   Text('Beep! Tap the screen as fast as you can!'),
                     if (reactionTime != null && gameEnded == true)
                       Text(
                         'Your reaction time: ${reactionTime?.inMilliseconds} ms',
@@ -242,7 +278,7 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
                 onTap: handleTap,
                 child: Container(
                   color: Colors.black,
-                  height: 100,
+                  height: screenHeight * 0.20,
                   alignment: Alignment.center,
                   child: Text(
                     'Tap Here',

@@ -90,25 +90,66 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Game Over'),
-          content: Text('Your score: $score'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          title: Text('Game Over', textAlign: TextAlign.center),
+          content: Text('Your score: $score', textAlign: TextAlign.center),
           actions: [
-            TextButton(
-              child: Text('Play Again'),
-              onPressed: () {
-                setState(() {
-                  score = 0;
-                  secondsLeft = 20;
-                });
-                startGame();
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Exit'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            // SizedBox(
+            //   width: double.infinity,
+            //   child: TextButton(
+            //     style: ButtonStyle(
+            //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            //         RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(12.0),
+            //         ),
+            //       ),
+            //       backgroundColor: MaterialStateProperty.all(Colors.black),
+            //     ),
+            //     child: Text(
+            //       'Play Again',
+            //       style: TextStyle(
+            //         color: Colors.white,
+            //       ),
+            //     ),
+            //     onPressed: () {
+            //       setState(() {
+            //         score = 0;
+            //         secondsLeft = 20;
+            //       });
+            //       startGame();
+            //       Navigator.of(context).pop();
+            //     },
+            //   ),
+            // ),
+            // SizedBox(
+            //   width: 10,
+            // ),
+            Center(
+              child: SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  child: Text(
+                    'Exit',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.pop(context);
+                  },
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                    ),
+                    backgroundColor: MaterialStateProperty.all(Colors.black),
+                  ),
+                ),
+              ),
             ),
           ],
         );
@@ -188,12 +229,18 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
                 children: [
                   Text(
                     'Score: $score',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey,
+                    ),
                   ),
                   SizedBox(width: 20),
                   Text(
                     'Time: $secondsLeft',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),
@@ -208,7 +255,7 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.black,
+                          color: Colors.grey,
                           width: 2.0,
                         ),
                       ),

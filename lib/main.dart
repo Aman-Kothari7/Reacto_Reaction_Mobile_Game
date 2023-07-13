@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_game/ReactionGame_2.dart';
 import 'package:test_game/ReactionGame_3.dart';
@@ -86,6 +87,67 @@ class _MenuScreenState extends State<MenuScreen> {
     return 'assets/images/default.png';
   }
 
+  void _showLevelDescription(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              //level 1
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    level_one,
+                    width: 50,
+                    height: 50,
+                  ),
+                  Text('Level 1'),
+                  Text('0 - 100'),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              //Level 2
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    level_two,
+                    width: 50,
+                    height: 50,
+                  ),
+                  Text('Level 2'),
+                  Text('101-5999'),
+                ],
+              ),
+              //Level 3
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    level_three,
+                    width: 50,
+                    height: 50,
+                  ),
+                  Text('Level 3'),
+                  Text('6000-9999'),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void loadBestReactionTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -134,6 +196,8 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -172,14 +236,14 @@ class _MenuScreenState extends State<MenuScreen> {
                                 child: Column(
                                   children: [
                                     SizedBox(
-                                      height: 350.0,
+                                      height: screenHeight * 0.25,
                                     ),
                                     Text(
                                       '1',
                                       style: TextStyle(fontSize: 50),
                                     ),
                                     SizedBox(
-                                      height: 150.0,
+                                      height: screenHeight * 0.15,
                                     ),
                                     Column(
                                       mainAxisAlignment:
@@ -256,7 +320,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                   //mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(
-                                      height: 350.0,
+                                      height: screenHeight * 0.25,
                                     ),
                                     Text(
                                       '2',
@@ -266,7 +330,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                       ),
                                     ),
                                     SizedBox(
-                                      height: 150.0,
+                                      height: screenHeight * 0.15,
                                     ),
                                     Column(
                                       mainAxisAlignment:
@@ -348,14 +412,14 @@ class _MenuScreenState extends State<MenuScreen> {
                                   //mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SizedBox(
-                                      height: 350.0,
+                                      height: screenHeight * 0.25,
                                     ),
                                     const Text(
                                       '3',
                                       style: TextStyle(fontSize: 50),
                                     ),
                                     SizedBox(
-                                      height: 150.0,
+                                      height: screenHeight * 0.15,
                                     ),
                                     Column(
                                       mainAxisAlignment:
@@ -432,7 +496,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                 child: Column(
                                   children: [
                                     SizedBox(
-                                      height: 350.0,
+                                      height: screenHeight * 0.25,
                                     ),
                                     const Text(
                                       '4',
@@ -444,7 +508,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                     Column(
                                       children: [
                                         SizedBox(
-                                          height: 150.0,
+                                          height: screenHeight * 0.15,
                                         ),
                                         const Text(
                                           'PB',
@@ -491,8 +555,8 @@ class _MenuScreenState extends State<MenuScreen> {
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: Colors.black)),
-                height: 75,
+                    border: Border.all(color: Colors.white)),
+                height: screenHeight * 0.10,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -503,22 +567,41 @@ class _MenuScreenState extends State<MenuScreen> {
                         Text(
                           'SCORE',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           '${aggregateScore != 0 ? aggregateScore : '-'}',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 24, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      width: 50,
+                    // SizedBox(
+                    //   width: screenWidth * 0.10,
+                    // ),
+                    IconButton(
+                      onPressed: () {
+                        // Build the content to share
+                        String content = '\nTotal Score: $aggregateScore';
+
+                        // Share the content
+                        Share.share(content);
+                      },
+                      icon: Icon(Icons.share),
+                      color: Colors.black,
+                      iconSize: 24,
+                      //splashColor: Colors.grey,
                     ),
-                    Image.asset(
-                      getCurrentLevelImagePath(),
-                      width: 50,
-                      height: 30,
+
+                    GestureDetector(
+                      onTap: () {
+                        _showLevelDescription(context);
+                      },
+                      child: Image.asset(
+                        getCurrentLevelImagePath(),
+                        width: 50,
+                        height: 50,
+                      ),
                     ),
                   ],
                 ),
@@ -530,6 +613,8 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 }
+  
+
 
 // Column(
 //           //mainAxisAlignment: MainAxisAlignment.center,
