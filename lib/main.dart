@@ -45,6 +45,7 @@ class _MenuScreenState extends State<MenuScreen> {
   int? bestReactionScore3;
   int? bestReactionTime4;
   int aggregateScore = 0;
+  bool showShareBubble = false;
 
   @override
   void initState() {
@@ -190,6 +191,7 @@ class _MenuScreenState extends State<MenuScreen> {
     if (!aggregateScore.isNaN && !aggregateScore.isInfinite) {
       setState(() {
         this.aggregateScore = aggregateScore.round();
+        showShareBubble = true;
       });
     }
   }
@@ -554,8 +556,9 @@ class _MenuScreenState extends State<MenuScreen> {
               width: double.infinity,
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.white)),
+                  color: Colors.white,
+                  border: Border.all(color: Colors.white),
+                ),
                 height: screenHeight * 0.10,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -579,18 +582,31 @@ class _MenuScreenState extends State<MenuScreen> {
                     // SizedBox(
                     //   width: screenWidth * 0.10,
                     // ),
-                    IconButton(
-                      onPressed: () {
-                        // Build the content to share
-                        String content = '\nTotal Score: $aggregateScore';
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (showShareBubble)
+                          Container(
+                            color: Colors.red,
+                            child: Text(
+                              " SHARE SCORE ",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        IconButton(
+                          onPressed: () {
+                            // Build the content to share
+                            String content = '\nTotal Score: $aggregateScore';
 
-                        // Share the content
-                        Share.share(content);
-                      },
-                      icon: Icon(Icons.share),
-                      color: Colors.black,
-                      iconSize: 24,
-                      //splashColor: Colors.grey,
+                            // Share the content
+                            Share.share(content);
+                          },
+                          icon: Icon(Icons.share),
+                          color: Colors.black,
+                          iconSize: 24,
+                          //splashColor: Colors.grey,
+                        ),
+                      ],
                     ),
 
                     GestureDetector(
@@ -613,8 +629,6 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 }
-  
-
 
 // Column(
 //           //mainAxisAlignment: MainAxisAlignment.center,
@@ -707,9 +721,9 @@ class _MenuScreenState extends State<MenuScreen> {
 //               style: TextStyle(fontSize: 16),
 //             ),
 //             SizedBox(height: 50.0),
-            // Text(
-            //   'Aggregate Score: $aggregateScore',
-            //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            // ),
+// Text(
+//   'Aggregate Score: $aggregateScore',
+//   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+// ),
 //           ],
 //         ),
