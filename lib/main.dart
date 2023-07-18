@@ -1,9 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_game/ReactionGame_2.dart';
 import 'package:test_game/ReactionGame_3.dart';
 import 'package:test_game/image_strings.dart';
+import 'package:test_game/info_screen.dart';
 import 'ReactionGame_1.dart';
 import 'ReactionGame_4.dart';
 
@@ -19,9 +25,6 @@ class GameApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Simple Games App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: const MenuScreen(),
     );
   }
@@ -202,421 +205,522 @@ class _MenuScreenState extends State<MenuScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        body: Stack(
           children: [
-            Expanded(
-              child: Row(
-                children: [
-                  // 1st game
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                              // style: ElevatedButton.styleFrom(
-                              //   backgroundColor: Colors.white,
-                              // ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ReactionGameScreen1(
-                                            updateBestReactionTime:
-                                                (newBestReactionTime) {
-                                              setState(() {
-                                                bestReactionTime =
-                                                    newBestReactionTime;
-                                                updateAggregateScore();
-                                              });
-                                            },
-                                          )),
-                                );
-                              },
-                              child: Container(
-                                color: Colors.white,
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: screenHeight * 0.25,
-                                    ),
-                                    Text(
-                                      '1',
-                                      style: TextStyle(fontSize: 50),
-                                    ),
-                                    SizedBox(
-                                      height: screenHeight * 0.15,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+            Column(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      // 1st game
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                  // style: ElevatedButton.styleFrom(
+                                  //   backgroundColor: Colors.white,
+                                  // ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ReactionGameScreen1(
+                                                updateBestReactionTime:
+                                                    (newBestReactionTime) {
+                                                  setState(() {
+                                                    bestReactionTime =
+                                                        newBestReactionTime;
+                                                    updateAggregateScore();
+                                                  });
+                                                },
+                                              )),
+                                    );
+                                  },
+                                  child: Container(
+                                    color: Colors.white,
+                                    child: Column(
                                       children: [
-                                        const Text(
-                                          'PB',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                        SizedBox(
+                                          height: screenHeight * 0.25,
                                         ),
-                                        for (var digit in (bestReactionTime != 0
-                                                ? bestReactionTime.toString()
-                                                : '-')
-                                            .split(''))
-                                          Text(
-                                            digit,
-                                            style: TextStyle(fontSize: 20),
-                                          ),
                                         Text(
-                                          'ms',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          '1',
+                                          style: TextStyle(fontSize: 50),
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                              // const Text(
-                              //   '1',
-                              //   style: TextStyle(
-                              //       fontSize: 50, color: Colors.black),
-                              // ),
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  //2nd game
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                              // style: ElevatedButton.styleFrom(
-                              //   backgroundColor: Colors.black,
-                              // ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ReactionGameScreen2(
-                                      updateBestReactionTime2:
-                                          (newBestReactionTime2) {
-                                        setState(() {
-                                          bestReactionTime2 =
-                                              newBestReactionTime2;
-                                          updateAggregateScore();
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                color: Colors.black,
-                                child: Column(
-                                  //mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: screenHeight * 0.25,
-                                    ),
-                                    Text(
-                                      '2',
-                                      style: TextStyle(
-                                        fontSize: 50,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: screenHeight * 0.15,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          'PB',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        for (var digit in (bestReactionTime2 !=
-                                                    0
-                                                ? bestReactionTime2.toString()
-                                                : '-')
-                                            .split(''))
-                                          Text(
-                                            digit,
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        Text(
-                                          'ms',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                              //const Text(
-                              //   '2',
-                              //   style: TextStyle(fontSize: 50),
-                              // ),
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  //3rd game
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                              // style: ElevatedButton.styleFrom(
-                              //   backgroundColor: Colors.white,
-                              // ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ReactionGameScreen3(
-                                      updateBestReactionScore3:
-                                          (newBestReactionScore3) {
-                                        setState(() {
-                                          bestReactionScore3 =
-                                              newBestReactionScore3;
-                                          updateAggregateScore();
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                color: Colors.white,
-                                child: Column(
-                                  //mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: screenHeight * 0.25,
-                                    ),
-                                    const Text(
-                                      '3',
-                                      style: TextStyle(fontSize: 50),
-                                    ),
-                                    SizedBox(
-                                      height: screenHeight * 0.15,
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          'PB',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        for (var digit in (bestReactionScore3 !=
-                                                    0
-                                                ? bestReactionScore3.toString()
-                                                : '-')
-                                            .split(''))
-                                          Text(
-                                            digit,
-                                            style: TextStyle(fontSize: 20),
-                                          ),
-                                        Text(
-                                          'Taps',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                              // const Text(
-                              //   '3',
-                              //   style:
-                              //       TextStyle(fontSize: 50, color: Colors.black),
-                              // ),
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  //4th game
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                              // style: ElevatedButton.styleFrom(
-                              //   backgroundColor: Colors.black,
-                              // ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ReactionGameScreen4(
-                                      updateBestReactionTime4:
-                                          (newBestReactionTime4) {
-                                        setState(() {
-                                          bestReactionTime4 =
-                                              newBestReactionTime4;
-                                          updateAggregateScore();
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                color: Colors.black,
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: screenHeight * 0.25,
-                                    ),
-                                    const Text(
-                                      '4',
-                                      style: TextStyle(
-                                        fontSize: 50,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Column(
-                                      children: [
                                         SizedBox(
                                           height: screenHeight * 0.15,
                                         ),
-                                        const Text(
-                                          'PB',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        for (var digit in (bestReactionTime4 !=
-                                                    0
-                                                ? bestReactionTime4.toString()
-                                                : '-')
-                                            .split(''))
-                                          Text(
-                                            digit,
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              'PB',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                        Text(
-                                          'ms',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
+                                            for (var digit
+                                                in (bestReactionTime != 0
+                                                        ? bestReactionTime
+                                                            .toString()
+                                                        : '-')
+                                                    .split(''))
+                                              Text(
+                                                digit,
+                                                style: TextStyle(fontSize: 20),
+                                              ),
+                                            Text(
+                                              'ms',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
-                              )),
+                                  )
+                                  // const Text(
+                                  //   '1',
+                                  //   style: TextStyle(
+                                  //       fontSize: 50, color: Colors.black),
+                                  // ),
+                                  ),
+                            ),
+                          ],
                         ),
+                      ),
+
+                      //2nd game
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                  // style: ElevatedButton.styleFrom(
+                                  //   backgroundColor: Colors.black,
+                                  // ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ReactionGameScreen2(
+                                          updateBestReactionTime2:
+                                              (newBestReactionTime2) {
+                                            setState(() {
+                                              bestReactionTime2 =
+                                                  newBestReactionTime2;
+                                              updateAggregateScore();
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    color: Colors.black,
+                                    child: Column(
+                                      //mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: screenHeight * 0.25,
+                                        ),
+                                        Text(
+                                          '2',
+                                          style: TextStyle(
+                                            fontSize: 50,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: screenHeight * 0.15,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              'PB',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            for (var digit
+                                                in (bestReactionTime2 != 0
+                                                        ? bestReactionTime2
+                                                            .toString()
+                                                        : '-')
+                                                    .split(''))
+                                              Text(
+                                                digit,
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            Text(
+                                              'ms',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                  //const Text(
+                                  //   '2',
+                                  //   style: TextStyle(fontSize: 50),
+                                  // ),
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      //3rd game
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                  // style: ElevatedButton.styleFrom(
+                                  //   backgroundColor: Colors.white,
+                                  // ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ReactionGameScreen3(
+                                          updateBestReactionScore3:
+                                              (newBestReactionScore3) {
+                                            setState(() {
+                                              bestReactionScore3 =
+                                                  newBestReactionScore3;
+                                              updateAggregateScore();
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    color: Colors.white,
+                                    child: Column(
+                                      //mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          height: screenHeight * 0.25,
+                                        ),
+                                        const Text(
+                                          '3',
+                                          style: TextStyle(fontSize: 50),
+                                        ),
+                                        SizedBox(
+                                          height: screenHeight * 0.15,
+                                        ),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              'PB',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            for (var digit
+                                                in (bestReactionScore3 != 0
+                                                        ? bestReactionScore3
+                                                            .toString()
+                                                        : '-')
+                                                    .split(''))
+                                              Text(
+                                                digit,
+                                                style: TextStyle(fontSize: 20),
+                                              ),
+                                            Text(
+                                              'Taps',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                  // const Text(
+                                  //   '3',
+                                  //   style:
+                                  //       TextStyle(fontSize: 50, color: Colors.black),
+                                  // ),
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      //4th game
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                  // style: ElevatedButton.styleFrom(
+                                  //   backgroundColor: Colors.black,
+                                  // ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ReactionGameScreen4(
+                                          updateBestReactionTime4:
+                                              (newBestReactionTime4) {
+                                            setState(() {
+                                              bestReactionTime4 =
+                                                  newBestReactionTime4;
+                                              updateAggregateScore();
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    color: Colors.black,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: screenHeight * 0.25,
+                                        ),
+                                        const Text(
+                                          '4',
+                                          style: TextStyle(
+                                            fontSize: 50,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Column(
+                                          children: [
+                                            SizedBox(
+                                              height: screenHeight * 0.15,
+                                            ),
+                                            const Text(
+                                              'PB',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            for (var digit
+                                                in (bestReactionTime4 != 0
+                                                        ? bestReactionTime4
+                                                            .toString()
+                                                        : '-')
+                                                    .split(''))
+                                              Text(
+                                                digit,
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            Text(
+                                              'ms',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.white),
+                    ),
+                    height: screenHeight * 0.10,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            _showLevelDescription(context);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'SCORE',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '${aggregateScore != 0 ? aggregateScore : '-'}',
+                                style: TextStyle(
+                                    fontSize: 28, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // SizedBox(
+                        //   width: screenWidth * 0.10,
+                        // ),
+
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (showShareBubble)
+                              Container(
+                                color: Colors.black,
+                                child: Text(
+                                  " SHARE SCORE ",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            IconButton(
+                              onPressed: () async {
+                                // Get the image file as bytes
+                                final ByteData bytes = await rootBundle
+                                    .load(getCurrentLevelImagePath());
+                                final Uint8List imageBytes =
+                                    bytes.buffer.asUint8List();
+
+                                // Save the image to a temporary file
+                                final tempDir = await getTemporaryDirectory();
+                                final tempFile =
+                                    await File('${tempDir.path}/level.jpg')
+                                        .create();
+                                tempFile.writeAsBytesSync(imageBytes);
+
+                                String shareText =
+                                    'Check out my score: $aggregateScore!';
+
+                                // Share the image
+                                await Share.shareFiles(
+                                  [tempFile.path],
+                                  text: shareText,
+                                  mimeTypes: ['image/jpeg'],
+                                  subject:
+                                      'Sharing Image', // Optional subject for the sharing dialog
+                                );
+                              },
+                              icon: Icon(Icons.share),
+                              color: Colors.black,
+                              iconSize: 24,
+                              //splashColor: Colors.grey,
+                            ),
+                          ],
+                        ),
+
+                        IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => info_screen()));
+                          },
+                          icon: Icon(Icons.info_outline),
+                          iconSize: 40,
+                        )
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.white),
                 ),
-                height: screenHeight * 0.10,
+              ],
+            ),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: screenHeight * 0.15,
+                color: Colors.transparent,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'SCORE',
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '${aggregateScore != 0 ? aggregateScore : '-'}',
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Colors.transparent,
+
+                        // First Element
+                      ),
                     ),
-                    // SizedBox(
-                    //   width: screenWidth * 0.10,
-                    // ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (showShareBubble)
-                          Container(
-                            color: Colors.red,
-                            child: Text(
-                              " SHARE SCORE ",
-                              style: TextStyle(color: Colors.white),
-                            ),
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          _showLevelDescription(context);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                blurRadius: 6.0,
+                                spreadRadius: 2.0,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
                           ),
-                        IconButton(
-                          onPressed: () {
-                            // Build the content to share
-                            String content = '\nTotal Score: $aggregateScore';
 
-                            // Share the content
-                            Share.share(content);
-                          },
-                          icon: Icon(Icons.share),
-                          color: Colors.black,
-                          iconSize: 24,
-                          //splashColor: Colors.grey,
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                getCurrentLevelImagePath(),
+                                width: 50,
+                                height: screenHeight * 0.14,
+                              ),
+                              //Text('Next level in 200 points'),
+                            ],
+                          ),
+
+                          // Middle Element
                         ),
-                      ],
+                      ),
                     ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Colors.transparent,
 
-                    GestureDetector(
-                      onTap: () {
-                        _showLevelDescription(context);
-                      },
-                      child: Image.asset(
-                        getCurrentLevelImagePath(),
-                        width: 50,
-                        height: 50,
+                        // Third Element
                       ),
                     ),
                   ],
@@ -629,101 +733,3 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 }
-
-// Column(
-//           //mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             ElevatedButton(
-//               onPressed: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                       builder: (context) => ReactionGameScreen1(
-//                             updateBestReactionTime: (newBestReactionTime) {
-//                               setState(() {
-//                                 bestReactionTime = newBestReactionTime;
-//                                 updateAggregateScore();
-//                               });
-//                             },
-//                           )),
-//                 );
-//               },
-//               child: Text('Reaction Game 1'),
-//             ),
-//             Text(
-//               'Best: ${bestReactionTime.toString()} ms',
-//               style: TextStyle(fontSize: 16),
-//             ),
-//             ElevatedButton(
-//               onPressed: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (context) => ReactionGameScreen2(
-//                       updateBestReactionTime2: (newBestReactionTime2) {
-//                         setState(() {
-//                           bestReactionTime2 = newBestReactionTime2;
-//                           updateAggregateScore();
-//                         });
-//                       },
-//                     ),
-//                   ),
-//                 );
-//               },
-//               child: const Text('Reaction Game 2'),
-//             ),
-//             Text(
-//               'Best: ${bestReactionTime2.toString()} ms',
-//               style: TextStyle(fontSize: 16),
-//             ),
-//             ElevatedButton(
-//               onPressed: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (context) => ReactionGameScreen3(
-//                       updateBestReactionScore3: (newBestReactionScore3) {
-//                         setState(() {
-//                           bestReactionScore3 = newBestReactionScore3;
-//                           updateAggregateScore();
-//                         });
-//                       },
-//                     ),
-//                   ),
-//                 );
-//               },
-//               child: const Text('Reaction Game 3'),
-//             ),
-//             Text(
-//               'Best: ${bestReactionScore3.toString()} score',
-//               style: TextStyle(fontSize: 16),
-//             ),
-//             ElevatedButton(
-//               onPressed: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (context) => ReactionGameScreen4(
-//                       updateBestReactionTime4: (newBestReactionTime4) {
-//                         setState(() {
-//                           bestReactionTime4 = newBestReactionTime4;
-//                           updateAggregateScore();
-//                         });
-//                       },
-//                     ),
-//                   ),
-//                 );
-//               },
-//               child: const Text('Reaction Game 4'),
-//             ),
-//             Text(
-//               'Best: ${bestReactionTime4.toString()} ms',
-//               style: TextStyle(fontSize: 16),
-//             ),
-//             SizedBox(height: 50.0),
-// Text(
-//   'Aggregate Score: $aggregateScore',
-//   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-// ),
-//           ],
-//         ),

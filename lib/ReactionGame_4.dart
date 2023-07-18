@@ -59,8 +59,9 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
     // Play the beep sound after the random delay
     Future.delayed(randomDelay, () {
       if (gameEnded == false) {
-        player.play(AssetSource('beep_sound.mp3'));
         if (mounted) {
+          player.play(AssetSource('beep_sound.mp3'));
+
           setState(() {
             beepTime = DateTime.now();
           });
@@ -276,6 +277,7 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
             else
               GestureDetector(
                 onTap: handleTap,
+                onLongPress: () {},
                 child: Container(
                   color: Colors.black,
                   height: screenHeight * 0.20,

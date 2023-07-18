@@ -14,7 +14,7 @@ class ReactionGameScreen1 extends StatefulWidget {
 }
 
 class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
-  List<bool> showCircle = [false, false, false];
+  List<bool> showCircle = [false, false, false, false, false];
   int circleIndex = 0;
   bool changeColors = false;
   DateTime? colorChangeTime;
@@ -40,7 +40,7 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
 
   void restartGame() {
     setState(() {
-      showCircle = [false, false, false];
+      showCircle = [false, false, false, false, false];
       changeColors = false;
       colorChangeTime = null;
       tapTime = null;
@@ -191,6 +191,7 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: handleTap,
+          onLongPress: () {},
           child: Stack(
             children: [
               Padding(
@@ -246,6 +247,8 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
                         if (showCircle[0]) _buildCircle(changeColors),
                         if (showCircle[1]) _buildCircle(changeColors),
                         if (showCircle[2]) _buildCircle(changeColors),
+                        if (showCircle[3]) _buildCircle(changeColors),
+                        if (showCircle[4]) _buildCircle(changeColors),
                       ],
                     ),
                     if (reactionTime != null)
@@ -279,16 +282,19 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
   }
 
   Widget _buildCircle(bool changeColors) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Container(
-      width: 100,
-      height: 100,
+      width: screenWidth * 0.15,
+      height: screenHeight * 0.1,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: changeColors ? Colors.white : Colors.red,
         border: Border.all(
-            color: changeColors ? Colors.black : Colors.transparent, width: 2),
+            color: changeColors ? Colors.black : Colors.transparent, width: 1),
       ),
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.all(screenWidth * 0.02),
     );
   }
 }

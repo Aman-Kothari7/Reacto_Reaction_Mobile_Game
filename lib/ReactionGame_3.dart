@@ -47,6 +47,7 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
         showGameOverDialog();
       }
     });
+    currentColoredIndex = null;
 
     generateRandomColoredCircle();
   }
@@ -56,7 +57,12 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
     isColoredList = List.generate(12, (index) => false);
 
     // Generate a random index for the next colored circle
-    currentColoredIndex = Random().nextInt(12);
+    int newIndex;
+    do {
+      newIndex = Random().nextInt(12);
+    } while (newIndex == currentColoredIndex);
+
+    currentColoredIndex = newIndex;
     isColoredList[currentColoredIndex!] = true;
   }
 
