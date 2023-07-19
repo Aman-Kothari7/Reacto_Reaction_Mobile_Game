@@ -6,10 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:test_game/ReactionGame_2.dart';
 import 'package:test_game/ReactionGame_3.dart';
 import 'package:test_game/image_strings.dart';
 import 'package:test_game/info_screen.dart';
+import 'package:test_game/level_ranges.dart';
 import 'ReactionGame_1.dart';
 import 'ReactionGame_4.dart';
 
@@ -61,19 +63,40 @@ class _MenuScreenState extends State<MenuScreen> {
 
   final List<Map<String, dynamic>> levelRanges = [
     {
-      'minScore': 0,
-      'maxScore': 1,
+      'minScore': levelOneMin,
+      'maxScore': levelOneMax,
       'imagePath': level_one,
+      'title': "N",
     },
     {
-      'minScore': 2,
-      'maxScore': 5999,
+      'minScore': levelTwoMin,
+      'maxScore': levelTwoMax,
       'imagePath': level_two,
+      'title': "F4",
     },
     {
-      'minScore': 6000,
-      'maxScore': 9999,
+      'minScore': levelThreeMin,
+      'maxScore': levelThreeMax,
       'imagePath': level_three,
+      'title': "F3",
+    },
+    {
+      'minScore': levelFourMin,
+      'maxScore': levelFourMax,
+      'imagePath': level_four,
+      'title': "F2",
+    },
+    {
+      'minScore': levelFiveMin,
+      'maxScore': levelFiveMax,
+      'imagePath': level_five,
+      'title': "F1",
+    },
+    {
+      'minScore': levelSixMin,
+      'maxScore': levelSixMax,
+      'imagePath': level_six,
+      'title': "W",
     },
   ];
 
@@ -92,60 +115,155 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   void _showLevelDescription(BuildContext context) {
+    String currentLevelTitle = getLevelTitle(aggregateScore);
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              //level 1
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    level_one,
-                    width: 50,
-                    height: 50,
-                  ),
-                  Text('Level 1'),
-                  Text('0 - 100'),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              //Level 2
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    level_two,
-                    width: 50,
-                    height: 50,
-                  ),
-                  Text('Level 2'),
-                  Text('101-5999'),
-                ],
-              ),
-              //Level 3
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    level_three,
-                    width: 50,
-                    height: 50,
-                  ),
-                  Text('Level 3'),
-                  Text('6000-9999'),
-                ],
-              ),
-            ],
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                SfRadialGauge(
+                  enableLoadingAnimation: true,
+                  animationDuration: 4000,
+                  axes: <RadialAxis>[
+                    RadialAxis(
+                      minimum: 0,
+                      maximum: 4200,
+                      //showLabels: false,
+                      labelOffset: 40,
+                      labelsPosition: ElementsPosition.inside,
+                      ranges: <GaugeRange>[
+                        GaugeRange(
+                          startValue: levelOneMin,
+                          endValue: levelOneMax,
+                          color: Colors.red,
+                          startWidth: 30,
+                          endWidth: 30,
+                          label: "N",
+                          rangeOffset: 10,
+                        ),
+                        GaugeRange(
+                          startValue: levelTwoMin,
+                          endValue: levelTwoMax,
+                          color: Colors.orange,
+                          startWidth: 30,
+                          endWidth: 30,
+                          rangeOffset: 10,
+                          label: "F4",
+                        ),
+                        GaugeRange(
+                          startValue: levelThreeMin,
+                          endValue: levelThreeMax,
+                          color: Colors.yellow,
+                          startWidth: 30,
+                          endWidth: 30,
+                          rangeOffset: 10,
+                          label: "F3",
+                        ),
+                        GaugeRange(
+                          startValue: levelFourMin,
+                          endValue: levelFourMax,
+                          color: Colors.lightGreen,
+                          startWidth: 30,
+                          endWidth: 30,
+                          rangeOffset: 10,
+                          label: "F2",
+                        ),
+                        GaugeRange(
+                          startValue: levelFiveMin,
+                          endValue: levelFiveMax,
+                          color: Colors.green,
+                          startWidth: 30,
+                          endWidth: 30,
+                          rangeOffset: 10,
+                          label: "F1",
+                        ),
+                        GaugeRange(
+                          startValue: levelSixMin,
+                          endValue: levelSixMax,
+                          color: Colors.purple,
+                          startWidth: 30,
+                          endWidth: 30,
+                          rangeOffset: 10,
+                          label: "W",
+                        ),
+                      ],
+                      pointers: <GaugePointer>[
+                        NeedlePointer(
+                          value:
+                              showShareBubble ? aggregateScore.toDouble() : 0,
+                          enableAnimation: true,
+                          animationDuration: 2000,
+                          animationType: AnimationType.bounceOut,
+                          knobStyle: KnobStyle(knobRadius: 0.05),
+                          needleStartWidth: 2,
+                          needleEndWidth: 6,
+                        )
+                      ],
+                      annotations: <GaugeAnnotation>[
+                        GaugeAnnotation(
+                            widget: Container(
+                                child: Text(currentLevelTitle,
+                                    style: TextStyle(
+                                        fontSize: 32,
+                                        fontWeight: FontWeight.bold))),
+                            angle: 90,
+                            positionFactor: 0.5)
+                      ],
+                    )
+                  ],
+                ),
+
+                //level 1
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      level_one,
+                      width: 50,
+                      height: 50,
+                    ),
+                    Text('Level 1'),
+                    Text('0 - 100'),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                //Level 2
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      level_two,
+                      width: 50,
+                      height: 50,
+                    ),
+                    Text('Level 2'),
+                    Text('101-5999'),
+                  ],
+                ),
+                //Level 3
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      level_three,
+                      width: 50,
+                      height: 50,
+                    ),
+                    Text('Level 3'),
+                    Text('6000-9999'),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -199,10 +317,25 @@ class _MenuScreenState extends State<MenuScreen> {
     }
   }
 
+  String getLevelTitle(int score) {
+    for (var levelRange in levelRanges) {
+      int minScore = (levelRange['minScore'] as num).toInt();
+      int maxScore = (levelRange['maxScore'] as num).toInt();
+
+      if (score >= minScore && score <= maxScore) {
+        return levelRange['title'] as String;
+      }
+    }
+
+    // Return a default title if no level range matches the aggregate score
+    return 'Level';
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    String currentLevelTitle = getLevelTitle(aggregateScore);
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -700,14 +833,95 @@ class _MenuScreenState extends State<MenuScreen> {
                             ],
                           ),
 
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                getCurrentLevelImagePath(),
-                                width: 50,
-                                height: screenHeight * 0.14,
-                              ),
-                              //Text('Next level in 200 points'),
+                          child: SfRadialGauge(
+                            enableLoadingAnimation: true,
+                            animationDuration: 4000,
+                            axes: <RadialAxis>[
+                              RadialAxis(
+                                minimum: 0,
+                                maximum: 4200,
+                                showLabels: false,
+                                ranges: <GaugeRange>[
+                                  GaugeRange(
+                                    startValue: levelOneMin,
+                                    endValue: levelOneMax,
+                                    color: Colors.red,
+                                    startWidth: 30,
+                                    endWidth: 30,
+                                    //label: "N",
+                                    rangeOffset: 10,
+                                  ),
+                                  GaugeRange(
+                                    startValue: levelTwoMin,
+                                    endValue: levelTwoMax,
+                                    color: Colors.orange,
+                                    startWidth: 30,
+                                    endWidth: 30,
+                                    rangeOffset: 10,
+                                    //label: "F4",
+                                  ),
+                                  GaugeRange(
+                                    startValue: levelThreeMin,
+                                    endValue: levelThreeMax,
+                                    color: Colors.yellow,
+                                    startWidth: 30,
+                                    endWidth: 30,
+                                    rangeOffset: 10,
+                                    //label: "F3",
+                                  ),
+                                  GaugeRange(
+                                    startValue: levelFourMin,
+                                    endValue: levelFourMax,
+                                    color: Colors.lightGreen,
+                                    startWidth: 30,
+                                    endWidth: 30,
+                                    rangeOffset: 10,
+                                    //label: "F2",
+                                  ),
+                                  GaugeRange(
+                                    startValue: levelFiveMin,
+                                    endValue: levelFiveMax,
+                                    color: Colors.green,
+                                    startWidth: 30,
+                                    endWidth: 30,
+                                    rangeOffset: 10,
+                                    //label: "F1",
+                                  ),
+                                  GaugeRange(
+                                    startValue: levelSixMin,
+                                    endValue: levelSixMax,
+                                    color: Colors.purple,
+                                    startWidth: 30,
+                                    endWidth: 30,
+                                    rangeOffset: 10,
+                                    //label: "W",
+                                  ),
+                                ],
+                                pointers: <GaugePointer>[
+                                  NeedlePointer(
+                                    value: showShareBubble
+                                        ? aggregateScore.toDouble()
+                                        : 0,
+                                    enableAnimation: true,
+                                    animationDuration: 2000,
+                                    animationType: AnimationType.bounceOut,
+                                    knobStyle: KnobStyle(knobRadius: 0),
+                                    needleStartWidth: 1,
+                                    needleEndWidth: 3,
+                                  )
+                                ],
+                                annotations: <GaugeAnnotation>[
+                                  GaugeAnnotation(
+                                      widget: Container(
+                                          child: Text(currentLevelTitle,
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight:
+                                                      FontWeight.bold))),
+                                      angle: 90,
+                                      positionFactor: 0.8)
+                                ],
+                              )
                             ],
                           ),
 
