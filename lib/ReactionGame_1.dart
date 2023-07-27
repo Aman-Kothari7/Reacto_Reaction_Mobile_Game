@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
 
+import 'info_screen.dart';
+
 class ReactionGameScreen1 extends StatefulWidget {
   final Function(int) updateBestReactionTime;
 
@@ -187,6 +189,20 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
+          actions: [
+            IconButton(
+              color: Colors.black,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            info_screen(initialPageIndex: 0)));
+              },
+              icon: Icon(Icons.info_outline),
+              iconSize: 40,
+            )
+          ],
         ),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -194,49 +210,49 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
           onLongPress: () {},
           child: Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Container(
-                  // height: screenHeight * 0.23,
-                  // width: screenWidth,
-                  padding: EdgeInsets.all(16.0),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 16.0),
-                      Text(
-                        '1. Wait for the lights to change color',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      SizedBox(height: 10.0),
-                      Text(
-                        '2. Tap the screen as quickly as possible',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        //textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 10.0),
-                      Text(
-                        '3. Your reaction time will be displayed below',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        //textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 16.0),
+              //   child: Container(
+              //     // height: screenHeight * 0.23,
+              //     // width: screenWidth,
+              //     padding: EdgeInsets.all(16.0),
+              //     child: const Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         SizedBox(height: 16.0),
+              //         Text(
+              //           '1. Wait for the lights to change color',
+              //           style: TextStyle(
+              //             color: Colors.grey,
+              //             fontSize: 22,
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //           textAlign: TextAlign.left,
+              //         ),
+              //         SizedBox(height: 10.0),
+              //         Text(
+              //           '2. Tap the screen as quickly as possible',
+              //           style: TextStyle(
+              //             color: Colors.grey,
+              //             fontSize: 22,
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //           //textAlign: TextAlign.center,
+              //         ),
+              //         SizedBox(height: 10.0),
+              //         Text(
+              //           '3. Your reaction time will be displayed below',
+              //           style: TextStyle(
+              //             color: Colors.grey,
+              //             fontSize: 22,
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //           //textAlign: TextAlign.center,
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

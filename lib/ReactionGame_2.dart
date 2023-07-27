@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'info_screen.dart';
+
 class ReactionGameScreen2 extends StatefulWidget {
   final Function(int) updateBestReactionTime2;
   const ReactionGameScreen2({super.key, required this.updateBestReactionTime2});
@@ -161,17 +163,19 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
   }
 
   void startColorTimer() {
-    colorTimer =
-        Timer.periodic(Duration(seconds: Random().nextInt(2) + 1), (_) {
-      setState(() {
-        screenColor = _getRandomConfusingColor();
-        if (screenColor == Colors.green && isPressed) {
-          stopwatch.reset();
-          stopwatch.start();
-          stopColorTimer();
-        }
+    if (mounted) {
+      colorTimer =
+          Timer.periodic(Duration(seconds: Random().nextInt(2) + 1), (_) {
+        setState(() {
+          screenColor = _getRandomConfusingColor();
+          if (screenColor == Colors.green && isPressed) {
+            stopwatch.reset();
+            stopwatch.start();
+            stopColorTimer();
+          }
+        });
       });
-    });
+    }
   }
 
   void stopColorTimer() {
@@ -188,68 +192,82 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: GestureDetector(
-          onTapDown: (_) => startGame(),
-          onTapUp: (_) => stopGame(),
-          child: Scaffold(
-            appBar: AppBar(
-              leading: BackButton(
-                color: Colors.white,
-              ),
-              title: Text(
-                'COLOR',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              centerTitle: true,
-              backgroundColor: Colors.black,
+        appBar: AppBar(
+          leading: BackButton(
+            color: Colors.white,
+          ),
+          title: Text(
+            'COLOR',
+            style: TextStyle(
+              color: Colors.white,
             ),
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.black,
+          actions: [
+            IconButton(
+              color: Colors.white,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            info_screen(initialPageIndex: 1)));
+              },
+              icon: Icon(Icons.info_outline),
+              iconSize: 40,
+            )
+          ],
+        ),
+        body: GestureDetector(
+          onPanDown: (_) => startGame(),
+          onPanEnd: (_) => stopGame(),
+          child: Scaffold(
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    color: screenColor,
-                    // height: screenHeight * 0.23,
-                    // width: screenWidth,
-                    padding: EdgeInsets.all(16.0),
-                    child: const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 16.0),
-                        Text(
-                          '1. Hold screen -> wait for color change ',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(height: 10.0),
-                        Text(
-                          '2. Leave screen -> as soon as screen color is green',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          //textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 10.0),
-                        Text(
-                          '3. React quickly!',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          //textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   color: screenColor,
+                  //   // height: screenHeight * 0.23,
+                  //   // width: screenWidth,
+                  //   padding: EdgeInsets.all(16.0),
+                  //   child: const Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       SizedBox(height: 16.0),
+                  //       Text(
+                  //         '1. Hold screen -> wait for color change ',
+                  //         style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontSize: 22,
+                  //           fontWeight: FontWeight.bold,
+                  //         ),
+                  //         textAlign: TextAlign.left,
+                  //       ),
+                  //       SizedBox(height: 10.0),
+                  //       Text(
+                  //         '2. Leave screen -> as soon as screen color is green',
+                  //         style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontSize: 22,
+                  //           fontWeight: FontWeight.bold,
+                  //         ),
+                  //         //textAlign: TextAlign.center,
+                  //       ),
+                  //       SizedBox(height: 10.0),
+                  //       Text(
+                  //         '3. React quickly!',
+                  //         style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontSize: 22,
+                  //           fontWeight: FontWeight.bold,
+                  //         ),
+                  //         //textAlign: TextAlign.center,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   Expanded(
                     child: Container(
                       color: screenColor,

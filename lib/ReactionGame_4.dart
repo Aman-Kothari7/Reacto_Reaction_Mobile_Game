@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'info_screen.dart';
+
 class ReactionGameScreen4 extends StatefulWidget {
   final Function(int) updateBestReactionTime4;
   const ReactionGameScreen4({Key? key, required this.updateBestReactionTime4});
@@ -27,6 +29,31 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
     retrieveBestReactionScore4();
     player = AudioPlayer();
     startCountdown();
+  }
+
+  void navigateToInfoScreen() async {
+    // Pause the game
+    setState(() {
+      gameStarted = false;
+      gameEnded = true;
+      beepTime = null;
+      player.stop();
+    });
+
+    // Navigate to the info screen and wait for it to complete
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => info_screen(initialPageIndex: 3),
+      ),
+    );
+
+    // Resume the game
+    setState(() {
+      gameEnded = false;
+      countdown = 3;
+      startCountdown();
+    });
   }
 
   void startCountdown() {
@@ -173,70 +200,78 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
           ),
           centerTitle: true,
           backgroundColor: Colors.black,
+          actions: [
+            IconButton(
+              color: Colors.white,
+              onPressed: navigateToInfoScreen,
+              icon: Icon(Icons.info_outline),
+              iconSize: 40,
+            )
+          ],
         ),
         body: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Container(
-                // height: screenHeight * 0.23,
-                // width: screenWidth,
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 16.0),
-                    Text(
-                      '1. Wait for the beed sound',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    SizedBox(height: 10.0),
-                    Text(
-                      '2. Tap the screen once you hear the sound',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      //textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 10.0),
-                    Text(
-                      '3. React Quickly!',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      //textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    if (!gameEnded)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.volume_up,
-                            color: Colors.grey,
-                            size: 100,
-                          ),
-                          Text(
-                            'Sound On',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                        ],
-                      )
-                  ],
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 16.0),
+            //   child: Container(
+            //     // height: screenHeight * 0.23,
+            //     // width: screenWidth,
+            //     padding: EdgeInsets.all(16.0),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         SizedBox(height: 16.0),
+            //         Text(
+            //           '1. Wait for the beed sound',
+            //           style: TextStyle(
+            //             color: Colors.grey,
+            //             fontSize: 22,
+            //             fontWeight: FontWeight.bold,
+            //           ),
+            //           textAlign: TextAlign.left,
+            //         ),
+            //         SizedBox(height: 10.0),
+            //         Text(
+            //           '2. Tap the screen once you hear the sound',
+            //           style: TextStyle(
+            //             color: Colors.grey,
+            //             fontSize: 22,
+            //             fontWeight: FontWeight.bold,
+            //           ),
+            //           //textAlign: TextAlign.center,
+            //         ),
+            //         SizedBox(height: 10.0),
+            //         Text(
+            //           '3. React Quickly!',
+            //           style: TextStyle(
+            //             color: Colors.grey,
+            //             fontSize: 22,
+            //             fontWeight: FontWeight.bold,
+            //           ),
+            //           //textAlign: TextAlign.center,
+            //         ),
+            //         SizedBox(
+            //           height: 20.0,
+            //         ),
+            //         if (!gameEnded)
+            //           Row(
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               Icon(
+            //                 Icons.volume_up,
+            //                 color: Colors.grey,
+            //                 size: 100,
+            //               ),
+            //               Text(
+            //                 'Sound On',
+            //                 style: TextStyle(color: Colors.grey),
+            //               ),
+            //             ],
+            //           )
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Expanded(
               child: Center(
                 child: Column(
@@ -280,7 +315,7 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
                 onLongPress: () {},
                 child: Container(
                   color: Colors.black,
-                  height: screenHeight * 0.20,
+                  height: screenHeight * 0.75,
                   alignment: Alignment.center,
                   child: Text(
                     'Tap Here',

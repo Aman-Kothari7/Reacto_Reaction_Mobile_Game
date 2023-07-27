@@ -51,6 +51,7 @@ class _MenuScreenState extends State<MenuScreen> {
   int? bestReactionTime4;
   int aggregateScore = 0;
   bool showShareBubble = false;
+  bool showPlayAllGames = false;
 
   @override
   void initState() {
@@ -60,6 +61,45 @@ class _MenuScreenState extends State<MenuScreen> {
     loadBestReactionScore3();
     loadBestReactionTime4();
   }
+
+  final Map<String, Map<String, double>> levelThresholds = {
+    "N": {
+      "Game 1": 0,
+      "Game 2": 0,
+      "Game 3": 0,
+      "Game 4": 0,
+    },
+    "F4": {
+      "Game 1": 14,
+      "Game 2": 14,
+      "Game 3": 14,
+      "Game 4": 14,
+    },
+    "F3": {
+      "Game 1": 24,
+      "Game 2": 24,
+      "Game 3": 24,
+      "Game 4": 24,
+    },
+    "F2": {
+      "Game 1": 32,
+      "Game 2": 32,
+      "Game 3": 32,
+      "Game 4": 32,
+    },
+    "F1": {
+      "Game 1": 36,
+      "Game 2": 36,
+      "Game 3": 36,
+      "Game 4": 36,
+    },
+    "C": {
+      "Game 1": 40,
+      "Game 2": 40,
+      "Game 3": 40,
+      "Game 4": 40,
+    },
+  };
 
   final List<Map<String, dynamic>> levelRanges = [
     {
@@ -102,8 +142,8 @@ class _MenuScreenState extends State<MenuScreen> {
 
   String getCurrentLevelImagePath() {
     for (var levelRange in levelRanges) {
-      int minScore = levelRange['minScore'];
-      int maxScore = levelRange['maxScore'];
+      int minScore = (levelRange['minScore'] as num).toInt();
+      int maxScore = (levelRange['maxScore'] as num).toInt();
 
       if (aggregateScore >= minScore && aggregateScore <= maxScore) {
         return levelRange['imagePath'];
@@ -303,18 +343,90 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   void updateAggregateScore() {
-    double totalScore = ((10000 / (bestReactionTime ?? 1)) +
-        (10000 / (bestReactionTime2 ?? 1)) +
-        (10000 / (bestReactionTime4 ?? 1)) +
-        (bestReactionScore3 ?? 0));
-
-    double aggregateScore = (totalScore / 4) * 100;
-    if (!aggregateScore.isNaN && !aggregateScore.isInfinite) {
+    bool meetsThreshold = true;
+    if (bestReactionTime == 0 ||
+        bestReactionTime2 == 0 ||
+        bestReactionTime4 == 0 ||
+        bestReactionScore3 == 0 ||
+        bestReactionTime == null ||
+        bestReactionTime2 == null ||
+        bestReactionTime4 == null ||
+        bestReactionScore3 == null) {
       setState(() {
-        this.aggregateScore = aggregateScore.round();
-        showShareBubble = true;
+        aggregateScore = 0;
+        showShareBubble = false;
+        showPlayAllGames = true;
       });
+    } else {
+      // Calculate individual game scores
+      double gameScore1 = (10000 / bestReactionTime!);
+      double gameScore2 = (10000 / bestReactionTime2!);
+      double gameScore3 = (bestReactionScore3! as num).toDouble();
+      double gameScore4 = (10000 / bestReactionTime4!);
+
+      // double totalScore = ((10000 / bestReactionTime!) +
+      //     (10000 / bestReactionTime2!) +
+      //     (10000 / bestReactionTime4!) +
+      //     bestReactionScore3!);
+
+      // double aggregateScore = (totalScore / 4) * 100;
+
+      // Calculate the aggregate score based on individual game scores
+      double totalScore = (gameScore1 + gameScore2 + gameScore4 + gameScore3);
+      double aggregateScore = (totalScore / 4) * 100;
+
+      // Get the thresholds for the current level
+      String currentLevel = getLevelTitle(aggregateScore.round());
+      Map<String, double> thresholdsForCurrentLevel =
+          levelThresholds[currentLevel] ?? {};
+
+      // Check if any game score is below its threshold
+      if (gameScore1 < (thresholdsForCurrentLevel["Game 1"] ?? 0) ||
+          gameScore2 < (thresholdsForCurrentLevel["Game 2"] ?? 0) ||
+          gameScore3 < (thresholdsForCurrentLevel["Game 3"] ?? 0) ||
+          gameScore4 < (thresholdsForCurrentLevel["Game 4"] ?? 0)) {
+        meetsThreshold = false;
+        print("false");
+      }
+
+      if (!aggregateScore.isNaN && !aggregateScore.isInfinite) {
+        setState(() {
+          if (meetsThreshold) {
+            this.aggregateScore = aggregateScore.round();
+            showShareBubble = true;
+            showPlayAllGames = false;
+          } else {
+            print("Going into method if meetsThreshold is false");
+            int currentLevelScore = getCurrentLevelScore(gameScore1.round(),
+                gameScore2.round(), gameScore3.round(), gameScore4.round());
+            print(currentLevelScore);
+            this.aggregateScore = currentLevelScore;
+            showShareBubble = true;
+            showPlayAllGames = true;
+          }
+        });
+      }
     }
+  }
+
+  int getCurrentLevelScore(
+      int scoreGame1, int scoreGame2, int scoreGame3, int scoreGame4) {
+    int currentLevelScore = 0;
+
+    for (var levelRange in levelRanges) {
+      String levelTitle = levelRange['title'] as String;
+      Map<String, double> thresholds = levelThresholds[levelTitle] ?? {};
+      // Check if all game scores meet the threshold for this level
+      if (scoreGame1 >= (thresholds['Game 1'] ?? 0) &&
+          scoreGame2 >= (thresholds['Game 2'] ?? 0) &&
+          scoreGame3 >= (thresholds['Game 3'] ?? 0) &&
+          scoreGame4 >= (thresholds['Game 4'] ?? 0)) {
+        currentLevelScore = (levelRange['maxScore'] as num).toInt();
+        break;
+      }
+    }
+
+    return currentLevelScore;
   }
 
   String getLevelTitle(int score) {
@@ -706,7 +818,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       color: Colors.white,
                       border: Border.all(color: Colors.white),
                     ),
-                    height: screenHeight * 0.10,
+                    height: screenHeight * 0.13,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -718,6 +830,18 @@ class _MenuScreenState extends State<MenuScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              if (showPlayAllGames)
+                                Container(
+                                  //color: Colors.black,
+                                  child: Text(
+                                    " Play All Games ",
+                                    style: TextStyle(color: Colors.black),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              SizedBox(
+                                height: 5,
+                              ),
                               Text(
                                 'SCORE',
                                 style: TextStyle(
@@ -744,6 +868,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                 child: Text(
                                   " SHARE SCORE ",
                                   style: TextStyle(color: Colors.white),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             IconButton(
@@ -786,7 +911,8 @@ class _MenuScreenState extends State<MenuScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => info_screen()));
+                                    builder: (context) =>
+                                        info_screen(initialPageIndex: 0)));
                           },
                           icon: Icon(Icons.info_outline),
                           iconSize: 40,

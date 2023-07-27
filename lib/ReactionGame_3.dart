@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'info_screen.dart';
+
 class ReactionGameScreen3 extends StatefulWidget {
   final Function(int) updateBestReactionScore3;
   const ReactionGameScreen3(
@@ -18,7 +20,7 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
   Timer? timer;
   int secondsLeft = 20;
   int? currentColoredIndex;
-  List<bool> isColoredList = List.generate(12, (index) => false);
+  List<bool> isColoredList = List.generate(15, (index) => false);
   int bestReactionScore3 = 0;
 
   @override
@@ -54,12 +56,12 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
 
   void generateRandomColoredCircle() {
     // Clear any existing colored circles
-    isColoredList = List.generate(12, (index) => false);
+    isColoredList = List.generate(15, (index) => false);
 
     // Generate a random index for the next colored circle
     int newIndex;
     do {
-      newIndex = Random().nextInt(12);
+      newIndex = Random().nextInt(15);
     } while (newIndex == currentColoredIndex);
 
     currentColoredIndex = newIndex;
@@ -91,82 +93,70 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
   }
 
   void showGameOverDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          title: Text('Game Over', textAlign: TextAlign.center),
-          content: Text('Your score: $score', textAlign: TextAlign.center),
-          actions: [
-            // SizedBox(
-            //   width: double.infinity,
-            //   child: TextButton(
-            //     style: ButtonStyle(
-            //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            //         RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(12.0),
-            //         ),
-            //       ),
-            //       backgroundColor: MaterialStateProperty.all(Colors.black),
-            //     ),
-            //     child: Text(
-            //       'Play Again',
-            //       style: TextStyle(
-            //         color: Colors.white,
-            //       ),
-            //     ),
-            //     onPressed: () {
-            //       setState(() {
-            //         score = 0;
-            //         secondsLeft = 20;
-            //       });
-            //       startGame();
-            //       Navigator.of(context).pop();
-            //     },
-            //   ),
-            // ),
-            // SizedBox(
-            //   width: 10,
-            // ),
-            Center(
-              child: SizedBox(
-                width: double.infinity,
-                child: TextButton(
-                  child: Text(
-                    'Exit',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.pop(context);
-                  },
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
+    if (mounted) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            title: Text('Game Over', textAlign: TextAlign.center),
+            content: Text('Your score: $score', textAlign: TextAlign.center),
+            actions: [
+              Center(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    child: Text(
+                      'Exit',
+                      style: TextStyle(
+                        color: Colors.white,
                       ),
                     ),
-                    backgroundColor: MaterialStateProperty.all(Colors.black),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.pop(context);
+                    },
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                      ),
+                      backgroundColor: MaterialStateProperty.all(Colors.black),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        );
-      },
-    );
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
   void dispose() {
     timer!.cancel();
     super.dispose();
+  }
+
+  void navigateToInfoScreen() async {
+    // Pause the game
+    timer?.cancel();
+
+    // Navigate to the info screen and wait for it to complete
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => info_screen(initialPageIndex: 2),
+      ),
+    );
+
+    // Resume the game
+    startGame();
   }
 
   @override
@@ -185,49 +175,57 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
           ),
           centerTitle: true,
           backgroundColor: Colors.white,
+          actions: [
+            IconButton(
+              color: Colors.black,
+              onPressed: navigateToInfoScreen,
+              icon: Icon(Icons.info_outline),
+              iconSize: 40,
+            )
+          ],
         ),
         body: Column(
           children: [
-            Container(
-              // height: screenHeight * 0.23,
-              // width: screenWidth,
-              padding: EdgeInsets.all(16.0),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 16.0),
-                  Text(
-                    '1. Tap the red circles as fast as possible',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    '2. You have 20 seconds',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    //textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    '3. React quickly!',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    //textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   // height: screenHeight * 0.23,
+            //   // width: screenWidth,
+            //   padding: EdgeInsets.all(16.0),
+            //   child: const Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       SizedBox(height: 16.0),
+            //       Text(
+            //         '1. Tap the red circles as fast as possible',
+            //         style: TextStyle(
+            //           color: Colors.grey,
+            //           fontSize: 18,
+            //           fontWeight: FontWeight.bold,
+            //         ),
+            //         textAlign: TextAlign.left,
+            //       ),
+            //       SizedBox(height: 10.0),
+            //       Text(
+            //         '2. You have 20 seconds',
+            //         style: TextStyle(
+            //           color: Colors.grey,
+            //           fontSize: 18,
+            //           fontWeight: FontWeight.bold,
+            //         ),
+            //         //textAlign: TextAlign.center,
+            //       ),
+            //       SizedBox(height: 10.0),
+            //       Text(
+            //         '3. React quickly!',
+            //         style: TextStyle(
+            //           color: Colors.grey,
+            //           fontSize: 18,
+            //           fontWeight: FontWeight.bold,
+            //         ),
+            //         //textAlign: TextAlign.center,
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -252,28 +250,47 @@ class _ReactionGameScreen3State extends State<ReactionGameScreen3> {
               ),
             ),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 3,
-                children: List.generate(12, (index) {
-                  return GestureDetector(
-                    onTap: () => onTapCircle(index),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 2.0,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final screenWidth = constraints.maxWidth;
+                  final availableSpaceForCircles =
+                      screenWidth - 16; // Adjust padding as needed
+                  double circleSize;
+                  if (screenWidth >= 400) {
+                    // For bigger phones or tablets
+                    circleSize = availableSpaceForCircles / 3;
+                  } else {
+                    // For smaller phones
+                    circleSize = availableSpaceForCircles / 4;
+                  }
+                  return Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: List.generate(15, (index) {
+                      return GestureDetector(
+                        onTap: () => onTapCircle(index),
+                        child: Container(
+                          width: constraints.maxWidth / 3 - 8,
+                          height: circleSize,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 2.0,
+                            ),
+                          ),
+                          child: CircleAvatar(
+                            backgroundColor: isColoredList[index]
+                                ? Colors.red
+                                : Colors.transparent,
+                            radius: (constraints.maxWidth / 3 - 8) / 2,
+                          ),
                         ),
-                      ),
-                      child: CircleAvatar(
-                        backgroundColor: isColoredList[index]
-                            ? Colors.red
-                            : Colors.transparent,
-                        radius: 50,
-                      ),
-                    ),
+                      );
+                    }),
                   );
-                }),
+                },
               ),
             ),
           ],

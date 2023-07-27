@@ -4,7 +4,8 @@ import 'package:test_game/image_strings.dart';
 import 'package:test_game/main.dart';
 
 class info_screen extends StatefulWidget {
-  const info_screen({super.key});
+  final int initialPageIndex;
+  const info_screen({super.key, required this.initialPageIndex});
 
   @override
   State<info_screen> createState() => info_screenState();
@@ -21,8 +22,9 @@ class info_screenState extends State<info_screen> {
           children: [
             LiquidSwipe(
               enableSideReveal: true,
-              enableLoop: false,
+              enableLoop: true,
               positionSlideIcon: 0.9,
+              initialPage: widget.initialPageIndex,
               slideIconWidget: Icon(
                 Icons.arrow_back_ios,
                 color: Colors.grey,
@@ -75,19 +77,33 @@ class info_screenState extends State<info_screen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MenuScreen(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.grey,
                               ),
-                            );
-                          },
-                          child: Text("HOME"),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text("BACK"),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.grey,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MenuScreen(),
+                                  ),
+                                );
+                              },
+                              child: Text("HOME"),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -140,22 +156,39 @@ class info_screenState extends State<info_screen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MenuScreen(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
                               ),
-                            );
-                          },
-                          child: Text(
-                            "HOME",
-                            style: TextStyle(color: Colors.grey),
-                          ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "BACK",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MenuScreen(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "HOME",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -208,19 +241,33 @@ class info_screenState extends State<info_screen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MenuScreen(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.grey,
                               ),
-                            );
-                          },
-                          child: Text("HOME"),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text("BACK"),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.grey,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MenuScreen(),
+                                  ),
+                                );
+                              },
+                              child: Text("HOME"),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -273,22 +320,39 @@ class info_screenState extends State<info_screen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MenuScreen(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
                               ),
-                            );
-                          },
-                          child: Text(
-                            "HOME",
-                            style: TextStyle(color: Colors.grey),
-                          ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "BACK",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MenuScreen(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "HOME",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
