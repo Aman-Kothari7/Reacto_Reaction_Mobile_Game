@@ -46,7 +46,7 @@ class info_screenState extends State<info_screen> {
                           ),
                         ),
                         Text(
-                          'Wait for the 5 red lights to show',
+                          'Five red circles will appear on the screen one at a time',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -60,7 +60,7 @@ class info_screenState extends State<info_screen> {
                           width: size.width * 0.95,
                         ),
                         Text(
-                          'The 5 lights will become transparent at a random time',
+                          'After a random amount of time the red color in the circles will disappear',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -69,7 +69,7 @@ class info_screenState extends State<info_screen> {
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          'Tap as soon as the color changes, record your best reaction time',
+                          'Tap the screen as soon as that happens to record your reaction time',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -125,7 +125,7 @@ class info_screenState extends State<info_screen> {
                           ),
                         ),
                         Text(
-                          'Hold the screen and wait for color change',
+                          'Press and hold the screen',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -139,7 +139,7 @@ class info_screenState extends State<info_screen> {
                           width: size.width * 0.95,
                         ),
                         Text(
-                          'Release the screen as soon as the screen color changes to green',
+                          'Do not lift you finger until the screen turns green',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -148,7 +148,7 @@ class info_screenState extends State<info_screen> {
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          'Ingore other colors, release screen as fast as you can on green',
+                          'As soon as the screen turns green lift you finger to record your reaction time',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -210,7 +210,7 @@ class info_screenState extends State<info_screen> {
                           ),
                         ),
                         Text(
-                          'You have 20 seconds to reach the highest score',
+                          'WARNING- GAME STARTS IMMEDIATELY ONCE YOU ENTER',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -224,7 +224,7 @@ class info_screenState extends State<info_screen> {
                           width: size.width * 0.95,
                         ),
                         Text(
-                          'Random circles will turn red',
+                          'Random circles will turn red on the grid one at a time',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -233,7 +233,7 @@ class info_screenState extends State<info_screen> {
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          'Keep tapping the circles until the time runs out',
+                          'Tap as many in 20 seconds to record your score',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -289,7 +289,7 @@ class info_screenState extends State<info_screen> {
                           ),
                         ),
                         Text(
-                          '3..2..1 and the game begins',
+                          'Increase phone volume',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -303,7 +303,7 @@ class info_screenState extends State<info_screen> {
                           width: size.width * 0.95,
                         ),
                         Text(
-                          'Wait for beep sound, increase phone volume to max',
+                          'After countdown a sound will play at a random time',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -312,7 +312,7 @@ class info_screenState extends State<info_screen> {
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          'Tap as soon as you hear the beep sound, record the best reaction time you can',
+                          'Tap the screen as fast as possible after you hear the sound',
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 22,
@@ -330,7 +330,7 @@ class info_screenState extends State<info_screen> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text(
+                              child: const Text(
                                 "BACK",
                                 style: TextStyle(color: Colors.grey),
                               ),

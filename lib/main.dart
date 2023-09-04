@@ -70,34 +70,34 @@ class _MenuScreenState extends State<MenuScreen> {
       "Game 4": 0,
     },
     "F4": {
-      "Game 1": 14,
-      "Game 2": 14,
-      "Game 3": 14,
-      "Game 4": 14,
+      "Game 1": 0,
+      "Game 2": 0,
+      "Game 3": 0,
+      "Game 4": 0,
     },
     "F3": {
-      "Game 1": 24,
-      "Game 2": 24,
-      "Game 3": 24,
-      "Game 4": 24,
+      "Game 1": 0,
+      "Game 2": 0,
+      "Game 3": 0,
+      "Game 4": 0,
     },
     "F2": {
-      "Game 1": 32,
-      "Game 2": 32,
-      "Game 3": 32,
-      "Game 4": 32,
+      "Game 1": 0,
+      "Game 2": 0,
+      "Game 3": 0,
+      "Game 4": 0,
     },
     "F1": {
-      "Game 1": 36,
-      "Game 2": 36,
-      "Game 3": 36,
-      "Game 4": 36,
+      "Game 1": 0,
+      "Game 2": 0,
+      "Game 3": 0,
+      "Game 4": 0,
     },
     "C": {
-      "Game 1": 40,
-      "Game 2": 40,
-      "Game 3": 40,
-      "Game 4": 40,
+      "Game 1": 0,
+      "Game 2": 0,
+      "Game 3": 0,
+      "Game 4": 0,
     },
   };
 
@@ -256,6 +256,52 @@ class _MenuScreenState extends State<MenuScreen> {
                     )
                   ],
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Every millisecond counts..",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                        fontFamily: 'Roboto',
+                      ),
+                    ),
+                    Text(
+                      "Practice to be your fastest self.",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontStyle: FontStyle.italic,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                        fontFamily: 'Roboto',
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'LEVEL DESCRIPTIONS',
+                      style: TextStyle(
+                        fontSize: 18,
+                        //fontStyle: FontStyle.italic,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.2,
+                        fontFamily: 'Roboto',
+                      ),
+                    ),
+                  ],
+                ),
 
                 //level 1
                 Row(
@@ -263,11 +309,11 @@ class _MenuScreenState extends State<MenuScreen> {
                   children: [
                     Image.asset(
                       level_one,
-                      width: 50,
-                      height: 50,
+                      width: 75,
+                      height: 75,
                     ),
-                    Text('Level 1'),
-                    Text('0 - 100'),
+                    Text('N'),
+                    Text('0000 - 1999'),
                   ],
                 ),
                 SizedBox(
@@ -279,11 +325,11 @@ class _MenuScreenState extends State<MenuScreen> {
                   children: [
                     Image.asset(
                       level_two,
-                      width: 50,
-                      height: 50,
+                      width: 75,
+                      height: 75,
                     ),
-                    Text('Level 2'),
-                    Text('101-5999'),
+                    Text('F4'),
+                    Text('2000 - 2599'),
                   ],
                 ),
                 //Level 3
@@ -295,11 +341,59 @@ class _MenuScreenState extends State<MenuScreen> {
                   children: [
                     Image.asset(
                       level_three,
-                      width: 50,
-                      height: 50,
+                      width: 75,
+                      height: 75,
                     ),
-                    Text('Level 3'),
-                    Text('6000-9999'),
+                    Text('F3'),
+                    Text('2600 - 3099'),
+                  ],
+                ),
+                //Level 4
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      level_four,
+                      width: 75,
+                      height: 75,
+                    ),
+                    Text('F2'),
+                    Text('3100 - 3599'),
+                  ],
+                ),
+                //Level 4
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      level_five,
+                      width: 75,
+                      height: 75,
+                    ),
+                    Text('F1'),
+                    Text('3600 - 3899'),
+                  ],
+                ),
+                //Level 3
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image.asset(
+                      level_six,
+                      width: 75,
+                      height: 75,
+                    ),
+                    Text('W'),
+                    Text('3900 - 6000'),
                   ],
                 ),
               ],
@@ -492,6 +586,10 @@ class _MenuScreenState extends State<MenuScreen> {
                                           height: screenHeight * 0.25,
                                         ),
                                         Text(
+                                          'LIGHTS',
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                        Text(
                                           '1',
                                           style: TextStyle(fontSize: 50),
                                         ),
@@ -577,6 +675,13 @@ class _MenuScreenState extends State<MenuScreen> {
                                       children: [
                                         SizedBox(
                                           height: screenHeight * 0.25,
+                                        ),
+                                        Text(
+                                          'COLOR',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                         Text(
                                           '2',
@@ -672,6 +777,10 @@ class _MenuScreenState extends State<MenuScreen> {
                                         SizedBox(
                                           height: screenHeight * 0.25,
                                         ),
+                                        Text(
+                                          'SPEED',
+                                          style: TextStyle(fontSize: 15),
+                                        ),
                                         const Text(
                                           '3',
                                           style: TextStyle(fontSize: 50),
@@ -701,7 +810,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                                 style: TextStyle(fontSize: 20),
                                               ),
                                             Text(
-                                              'Taps',
+                                              'taps',
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -757,6 +866,13 @@ class _MenuScreenState extends State<MenuScreen> {
                                       children: [
                                         SizedBox(
                                           height: screenHeight * 0.25,
+                                        ),
+                                        Text(
+                                          'SOUND',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                         const Text(
                                           '4',
@@ -887,7 +1003,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                 tempFile.writeAsBytesSync(imageBytes);
 
                                 String shareText =
-                                    'Check out my score: $aggregateScore!';
+                                    'Check out my score: $aggregateScore!, Score your reaction time now: ';
 
                                 // Share the image
                                 await Share.shareFiles(

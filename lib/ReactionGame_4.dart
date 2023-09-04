@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_game/level_ranges.dart';
 
 import 'info_screen.dart';
 
@@ -81,7 +82,7 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
     }
 
     // Generate a random delay between 1 and 5 seconds
-    final randomDelay = Duration(seconds: 1 + (DateTime.now().millisecond % 2));
+    final randomDelay = Duration(seconds: 2 + (DateTime.now().millisecond % 6));
 
     // Play the beep sound after the random delay
     Future.delayed(randomDelay, () {
@@ -103,11 +104,69 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
         reactionTime = DateTime.now().difference(beepTime!);
         gameStarted = false;
         gameEnded = true;
-        if (reactionTime!.inMilliseconds < bestReactionTime4 ||
-            bestReactionTime4 == 0) {
-          bestReactionTime4 = reactionTime!.inMilliseconds;
-          storeBestReactionScore4(bestReactionTime4);
-          widget.updateBestReactionTime4(bestReactionTime4);
+
+        if (reactionTime!.inMilliseconds < baseThresholdGameFour) {
+          reactionTime = Duration(milliseconds: bestReactionTime4);
+
+          setState(() {
+            gameEnded = true; // End the game
+            gameStarted = false;
+            beepTime = null;
+            player.stop();
+          });
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Impossible Reaction Time!',
+                    textAlign: TextAlign.center),
+                content: Text('Please retry for fair competition',
+                    textAlign: TextAlign.center),
+                actions: [
+                  Center(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          setState(() {
+                            gameEnded = true; // End the game
+                            beepTime = null;
+                            player.stop();
+                          });
+                          Navigator.pop(context);
+                        },
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.black),
+                        ),
+                        child: Text(
+                          'Exit',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              );
+            },
+          );
+        } else {
+          if (reactionTime!.inMilliseconds < bestReactionTime4 ||
+              bestReactionTime4 == 0) {
+            bestReactionTime4 = reactionTime!.inMilliseconds;
+            storeBestReactionScore4(bestReactionTime4);
+            widget.updateBestReactionTime4(bestReactionTime4);
+          }
         }
       });
     } else {

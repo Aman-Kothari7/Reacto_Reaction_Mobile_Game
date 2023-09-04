@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_game/level_ranges.dart';
 
 import 'info_screen.dart';
 
@@ -58,14 +59,67 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
         storeReactionTimeInInt = reactionTime!.inMilliseconds;
         //resetGame();
         //print(storeReactionTimeInInt);
+        if (storeReactionTimeInInt! < baseThresholdGameTwo) {
+          storeReactionTimeInInt = bestReactionTime2!;
 
-        if (bestReactionTime2 == null ||
-            storeReactionTimeInInt! < bestReactionTime2! ||
-            bestReactionTime2 == 0) {
-          bestReactionTime2 = reactionTime!.inMilliseconds;
-          storeBestReactionTime(bestReactionTime2!);
-          //print(bestReactionTime2);
-          widget.updateBestReactionTime2(bestReactionTime2!);
+          resetGame();
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                title: Text('Impossible Reaction Time!',
+                    textAlign: TextAlign.center),
+                content: Text('Please retry for fair competition',
+                    textAlign: TextAlign.center),
+                actions: [
+                  Center(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.pop(context);
+                        },
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                          ),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.black),
+                        ),
+                        child: Text(
+                          'Exit',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              );
+            },
+          );
+
+          setState(() {
+            isPressed = false;
+          });
+        } else {
+          if (bestReactionTime2 == null ||
+              storeReactionTimeInInt! < bestReactionTime2! ||
+              bestReactionTime2 == 0) {
+            bestReactionTime2 = reactionTime!.inMilliseconds;
+            storeBestReactionTime(bestReactionTime2!);
+            //print(bestReactionTime2);
+            widget.updateBestReactionTime2(bestReactionTime2!);
+          }
         }
 
         setState(() {

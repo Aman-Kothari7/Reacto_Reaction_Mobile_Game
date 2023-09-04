@@ -1,12 +1,10 @@
-import "dart:ui";
-
 //level images
-const String level_one = "assets/images/l1.png";
-const String level_two = "assets/images/l2.png";
-const String level_three = "assets/images/l3.png";
-const String level_four = "assets/images/l4.png";
-const String level_five = "assets/images/l5.png";
-const String level_six = "assets/images/l6.png";
+const String level_one = "assets/images/N.png";
+const String level_two = "assets/images/F4.png";
+const String level_three = "assets/images/F3.png";
+const String level_four = "assets/images/F2.png";
+const String level_five = "assets/images/F1.png";
+const String level_six = "assets/images/W.png";
 
 //info screen images
 const String rg_1_info = "assets/images/info_images/ReactionGame_1.png";
