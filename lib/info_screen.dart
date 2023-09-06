@@ -25,7 +25,7 @@ class info_screenState extends State<info_screen> {
               enableLoop: true,
               positionSlideIcon: 0.9,
               initialPage: widget.initialPageIndex,
-              slideIconWidget: Icon(
+              slideIconWidget: const Icon(
                 Icons.arrow_back_ios,
                 color: Colors.grey,
               ),
@@ -33,11 +33,11 @@ class info_screenState extends State<info_screen> {
                 Container(
                   color: Colors.white,
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
+                        const Text(
                           "LIGHTS",
                           style: TextStyle(
                             color: Colors.grey,
@@ -45,7 +45,7 @@ class info_screenState extends State<info_screen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
+                        const Text(
                           'Five red circles will appear on the screen one at a time',
                           style: TextStyle(
                             color: Colors.grey,
@@ -55,11 +55,11 @@ class info_screenState extends State<info_screen> {
                           textAlign: TextAlign.center,
                         ),
                         Image(
-                          image: AssetImage(rg_1_info),
+                          image: const AssetImage(rg_1_info),
                           height: size.height * 0.35,
                           width: size.width * 0.95,
                         ),
-                        Text(
+                        const Text(
                           'After a random amount of time the red color in the circles will disappear',
                           style: TextStyle(
                             color: Colors.grey,
@@ -68,7 +68,7 @@ class info_screenState extends State<info_screen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        Text(
+                        const Text(
                           'Tap the screen as soon as that happens to record your reaction time',
                           style: TextStyle(
                             color: Colors.grey,
@@ -87,7 +87,7 @@ class info_screenState extends State<info_screen> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text("BACK"),
+                              child: const Text("BACK"),
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -97,11 +97,11 @@ class info_screenState extends State<info_screen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MenuScreen(),
+                                    builder: (context) => const MenuScreen(),
                                   ),
                                 );
                               },
-                              child: Text("HOME"),
+                              child: const Text("HOME"),
                             ),
                           ],
                         ),
@@ -112,11 +112,11 @@ class info_screenState extends State<info_screen> {
                 Container(
                   color: Colors.black,
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
+                        const Text(
                           "COLOR",
                           style: TextStyle(
                             color: Colors.grey,
@@ -124,7 +124,7 @@ class info_screenState extends State<info_screen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
+                        const Text(
                           'Press and hold the screen',
                           style: TextStyle(
                             color: Colors.grey,
@@ -138,7 +138,7 @@ class info_screenState extends State<info_screen> {
                           height: size.height * 0.35,
                           width: size.width * 0.95,
                         ),
-                        Text(
+                        const Text(
                           'Do not lift you finger until the screen turns green',
                           style: TextStyle(
                             color: Colors.grey,
@@ -147,7 +147,7 @@ class info_screenState extends State<info_screen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        Text(
+                        const Text(
                           'As soon as the screen turns green lift you finger to record your reaction time',
                           style: TextStyle(
                             color: Colors.grey,
@@ -166,7 +166,7 @@ class info_screenState extends State<info_screen> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text(
+                              child: const Text(
                                 "BACK",
                                 style: TextStyle(color: Colors.grey),
                               ),
@@ -179,11 +179,11 @@ class info_screenState extends State<info_screen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MenuScreen(),
+                                    builder: (context) => const MenuScreen(),
                                   ),
                                 );
                               },
-                              child: Text(
+                              child: const Text(
                                 "HOME",
                                 style: TextStyle(color: Colors.grey),
                               ),
@@ -197,11 +197,11 @@ class info_screenState extends State<info_screen> {
                 Container(
                   color: Colors.white,
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
+                        const Text(
                           "SPEED",
                           style: TextStyle(
                             color: Colors.grey,
@@ -209,7 +209,7 @@ class info_screenState extends State<info_screen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
+                        const Text(
                           'WARNING- GAME STARTS IMMEDIATELY ONCE YOU ENTER',
                           style: TextStyle(
                             color: Colors.grey,
@@ -223,7 +223,7 @@ class info_screenState extends State<info_screen> {
                           height: size.height * 0.35,
                           width: size.width * 0.95,
                         ),
-                        Text(
+                        const Text(
                           'Random circles will turn red on the grid one at a time',
                           style: TextStyle(
                             color: Colors.grey,
@@ -232,7 +232,7 @@ class info_screenState extends State<info_screen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        Text(
+                        const Text(
                           'Tap as many in 20 seconds to record your score',
                           style: TextStyle(
                             color: Colors.grey,
@@ -251,7 +251,7 @@ class info_screenState extends State<info_screen> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              child: Text("BACK"),
+                              child: const Text("BACK"),
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -261,11 +261,11 @@ class info_screenState extends State<info_screen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MenuScreen(),
+                                    builder: (context) => const MenuScreen(),
                                   ),
                                 );
                               },
-                              child: Text("HOME"),
+                              child: const Text("HOME"),
                             ),
                           ],
                         ),
@@ -276,11 +276,11 @@ class info_screenState extends State<info_screen> {
                 Container(
                   color: Colors.black,
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
+                        const Text(
                           "SOUND",
                           style: TextStyle(
                             color: Colors.grey,
@@ -288,7 +288,7 @@ class info_screenState extends State<info_screen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
+                        const Text(
                           'Increase phone volume',
                           style: TextStyle(
                             color: Colors.grey,
@@ -298,11 +298,11 @@ class info_screenState extends State<info_screen> {
                           textAlign: TextAlign.center,
                         ),
                         Image(
-                          image: AssetImage(rg_4_info),
+                          image: const AssetImage(rg_4_info),
                           height: size.height * 0.35,
                           width: size.width * 0.95,
                         ),
-                        Text(
+                        const Text(
                           'After countdown a sound will play at a random time',
                           style: TextStyle(
                             color: Colors.grey,
@@ -311,7 +311,7 @@ class info_screenState extends State<info_screen> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        Text(
+                        const Text(
                           'Tap the screen as fast as possible after you hear the sound',
                           style: TextStyle(
                             color: Colors.grey,
@@ -343,11 +343,11 @@ class info_screenState extends State<info_screen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MenuScreen(),
+                                    builder: (context) => const MenuScreen(),
                                   ),
                                 );
                               },
-                              child: Text(
+                              child: const Text(
                                 "HOME",
                                 style: TextStyle(color: Colors.grey),
                               ),
