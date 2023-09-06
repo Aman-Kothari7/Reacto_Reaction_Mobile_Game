@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ import 'ReactionGame_1.dart';
 import 'ReactionGame_4.dart';
 
 void main() {
-  runApp(GameApp());
+  runApp(const GameApp());
 }
 
 class GameApp extends StatelessWidget {
@@ -24,10 +23,10 @@ class GameApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Simple Games App',
-      home: const MenuScreen(),
+      home: MenuScreen(),
     );
   }
 }
@@ -162,7 +161,7 @@ class _MenuScreenState extends State<MenuScreen> {
       builder: (context) {
         return SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 SfRadialGauge(
@@ -238,25 +237,23 @@ class _MenuScreenState extends State<MenuScreen> {
                           enableAnimation: true,
                           animationDuration: 2000,
                           animationType: AnimationType.bounceOut,
-                          knobStyle: KnobStyle(knobRadius: 0.05),
+                          knobStyle: const KnobStyle(knobRadius: 0.05),
                           needleStartWidth: 2,
                           needleEndWidth: 6,
                         )
                       ],
                       annotations: <GaugeAnnotation>[
                         GaugeAnnotation(
-                            widget: Container(
-                                child: Text(currentLevelTitle,
-                                    style: TextStyle(
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.bold))),
+                            widget: Text(currentLevelTitle,
+                                style: const TextStyle(
+                                    fontSize: 32, fontWeight: FontWeight.bold)),
                             angle: 90,
                             positionFactor: 0.5)
                       ],
                     )
                   ],
                 ),
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
@@ -283,10 +280,10 @@ class _MenuScreenState extends State<MenuScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -312,11 +309,11 @@ class _MenuScreenState extends State<MenuScreen> {
                       width: 75,
                       height: 75,
                     ),
-                    Text('N'),
-                    Text('0000 - 1999'),
+                    const Text('N'),
+                    const Text('0000 - 1999'),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 //Level 2
@@ -328,12 +325,12 @@ class _MenuScreenState extends State<MenuScreen> {
                       width: 75,
                       height: 75,
                     ),
-                    Text('F4'),
-                    Text('2000 - 2599'),
+                    const Text('F4'),
+                    const Text('2000 - 2599'),
                   ],
                 ),
                 //Level 3
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -344,12 +341,12 @@ class _MenuScreenState extends State<MenuScreen> {
                       width: 75,
                       height: 75,
                     ),
-                    Text('F3'),
-                    Text('2600 - 3099'),
+                    const Text('F3'),
+                    const Text('2600 - 3099'),
                   ],
                 ),
                 //Level 4
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -360,12 +357,12 @@ class _MenuScreenState extends State<MenuScreen> {
                       width: 75,
                       height: 75,
                     ),
-                    Text('F2'),
-                    Text('3100 - 3599'),
+                    const Text('F2'),
+                    const Text('3100 - 3599'),
                   ],
                 ),
                 //Level 4
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -376,12 +373,12 @@ class _MenuScreenState extends State<MenuScreen> {
                       width: 75,
                       height: 75,
                     ),
-                    Text('F1'),
-                    Text('3600 - 3899'),
+                    const Text('F1'),
+                    const Text('3600 - 3899'),
                   ],
                 ),
                 //Level 3
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(
@@ -392,8 +389,8 @@ class _MenuScreenState extends State<MenuScreen> {
                       width: 75,
                       height: 75,
                     ),
-                    Text('W'),
-                    Text('3900 - 6000'),
+                    const Text('W'),
+                    const Text('3900 - 6000'),
                   ],
                 ),
               ],
