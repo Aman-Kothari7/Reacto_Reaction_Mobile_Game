@@ -15,6 +15,12 @@ import 'ReactionGame_1.dart';
 import 'ReactionGame_4.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(const GameApp());
 }
 
@@ -305,7 +311,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Image.asset(
-                      level_one,
+                      levelOneNoTitle,
                       width: 75,
                       height: 75,
                     ),
@@ -321,7 +327,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Image.asset(
-                      level_two,
+                      levelTwoNoTitle,
                       width: 75,
                       height: 75,
                     ),
@@ -337,7 +343,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Image.asset(
-                      level_three,
+                      levelThreeNoTitle,
                       width: 75,
                       height: 75,
                     ),
@@ -353,7 +359,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Image.asset(
-                      level_four,
+                      levelFourNoTitle,
                       width: 75,
                       height: 75,
                     ),
@@ -369,7 +375,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Image.asset(
-                      level_five,
+                      levelFiveNoTitle,
                       width: 75,
                       height: 75,
                     ),
@@ -385,7 +391,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Image.asset(
-                      level_six,
+                      levelSixNoTitle,
                       width: 75,
                       height: 75,
                     ),
@@ -1000,7 +1006,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                 tempFile.writeAsBytesSync(imageBytes);
 
                                 String shareText =
-                                    'Check out my score: $aggregateScore!, Score your reaction time now: ';
+                                    'Check out my score: $aggregateScore, Get your reaction score now: http://bit.ly/react-now';
 
                                 // Share the image
                                 await Share.shareFiles(
