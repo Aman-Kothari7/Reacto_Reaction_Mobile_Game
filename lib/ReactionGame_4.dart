@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_game/ad_helper.dart';
 import 'package:test_game/level_ranges.dart';
 
 import 'info_screen.dart';
@@ -23,10 +25,27 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
   int countdown = 3;
   int bestReactionTime4 = 0;
   bool gameEnded = false;
+  BannerAd? _bannerAd;
 
   @override
   void initState() {
     super.initState();
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    ).load();
     retrieveBestReactionScore4();
     player = AudioPlayer();
     startCountdown();
@@ -121,7 +140,8 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
               return AlertDialog(
                 title: Text('Impossible Reaction Time!',
                     textAlign: TextAlign.center),
-                content: Text('Please retry for fair competition',
+                content: Text(
+                    'Please return to the starting grid, incident under review.',
                     textAlign: TextAlign.center),
                 actions: [
                   Center(
@@ -181,9 +201,9 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Invalid Tap', textAlign: TextAlign.center),
-            content:
-                Text('Wait for the beep sound', textAlign: TextAlign.center),
+            title: Text('FALSE START', textAlign: TextAlign.center),
+            content: Text('Wait for the beep sound. Incident under review.',
+                textAlign: TextAlign.center),
             actions: [
               Center(
                 child: SizedBox(
@@ -247,6 +267,13 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
 
     return SafeArea(
       child: Scaffold(
+        bottomNavigationBar: (_bannerAd != null)
+            ? SizedBox(
+                width: _bannerAd!.size.width.toDouble(),
+                height: _bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd!),
+              )
+            : SizedBox(),
         appBar: AppBar(
           leading: BackButton(
             color: Colors.white,
@@ -374,7 +401,7 @@ class _ReactionGameScreen4State extends State<ReactionGameScreen4> {
                 onLongPress: () {},
                 child: Container(
                   color: Colors.black,
-                  height: screenHeight * 0.75,
+                  height: screenHeight * 0.60,
                   alignment: Alignment.center,
                   child: Text(
                     'Tap Here',

@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_game/ad_helper.dart';
 import 'package:test_game/level_ranges.dart';
 
 import 'info_screen.dart';
@@ -29,16 +31,34 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
   int? bestReactionTime2;
   int? storeReactionTimeInInt;
   bool gameEnded = false;
+  BannerAd? _bannerAd;
 
   @override
   void initState() {
     super.initState();
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    ).load();
     retrieveBestReactionTime();
   }
 
   @override
   void dispose() {
     colorTimer?.cancel(); // Cancel the timer in the dispose() method
+    _bannerAd?.dispose();
     super.dispose();
   }
 
@@ -73,7 +93,8 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
                 ),
                 title: Text('Impossible Reaction Time!',
                     textAlign: TextAlign.center),
-                content: Text('Please retry for fair competition',
+                content: Text(
+                    'Please return to the starting grid, incident under review.',
                     textAlign: TextAlign.center),
                 actions: [
                   Center(
@@ -135,8 +156,9 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.0),
               ),
-              title: Text('INVALID RELEASE', textAlign: TextAlign.center),
-              content: Text('Only release when the screen turns green!',
+              title: Text('FALSE START', textAlign: TextAlign.center),
+              content: Text(
+                  'Only release when the screen turns green. Incident under review.',
                   textAlign: TextAlign.center),
               actions: [
                 Center(
@@ -246,6 +268,13 @@ class _ReactionGameScreen2State extends State<ReactionGameScreen2> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        bottomNavigationBar: (_bannerAd != null)
+            ? SizedBox(
+                width: _bannerAd!.size.width.toDouble(),
+                height: _bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd!),
+              )
+            : SizedBox(),
         appBar: AppBar(
           leading: BackButton(
             color: Colors.white,

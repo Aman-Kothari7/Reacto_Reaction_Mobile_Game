@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:test_game/ReactionGame_2.dart';
 import 'package:test_game/ReactionGame_3.dart';
+import 'package:test_game/ad_helper.dart';
 import 'package:test_game/image_strings.dart';
 import 'package:test_game/info_screen.dart';
 import 'package:test_game/level_ranges.dart';
@@ -21,11 +23,17 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
   runApp(const GameApp());
 }
 
 class GameApp extends StatelessWidget {
   const GameApp({super.key});
+
+  Future<InitializationStatus> _initGoogleMobileAds() {
+    // TODO: Initialize Google Mobile Ads SDK
+    return MobileAds.instance.initialize();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +65,41 @@ class _MenuScreenState extends State<MenuScreen> {
   int aggregateScore = 0;
   bool showShareBubble = false;
   bool showPlayAllGames = false;
+  BannerAd? _bannerAd;
 
   @override
   void initState() {
     super.initState();
+
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    ).load();
+
     loadBestReactionTime();
     loadBestReactionTime2();
     loadBestReactionScore3();
     loadBestReactionTime4();
+  }
+
+  @override
+  void dispose() {
+    // TODO: Dispose a BannerAd object
+    _bannerAd?.dispose();
+
+    super.dispose();
   }
 
   final Map<String, Map<String, double>> levelThresholds = {
@@ -293,7 +328,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'LEVEL DESCRIPTIONS',
+                      'RANKINGS DESCRIPTION',
                       style: TextStyle(
                         fontSize: 18,
                         //fontStyle: FontStyle.italic,
@@ -547,6 +582,13 @@ class _MenuScreenState extends State<MenuScreen> {
     String currentLevelTitle = getLevelTitle(aggregateScore);
     return SafeArea(
       child: Scaffold(
+        bottomNavigationBar: (_bannerAd != null)
+            ? SizedBox(
+                width: _bannerAd!.size.width.toDouble(),
+                height: _bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd!),
+              )
+            : Text(""),
         body: Stack(
           children: [
             Column(

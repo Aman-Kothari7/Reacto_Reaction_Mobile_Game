@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
+import 'package:test_game/ad_helper.dart';
 import 'package:test_game/level_ranges.dart';
 
 import 'info_screen.dart';
@@ -27,10 +29,28 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
   Timer? circlesTimer;
   int? bestReactionTime;
   bool gameEnded = false;
+  BannerAd? _bannerAd;
 
   @override
   void initState() {
     super.initState();
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    ).load();
+
     retrieveBestReactionTime();
     startShowingCircles();
   }
@@ -38,6 +58,7 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
   @override
   void dispose() {
     circlesTimer?.cancel(); // Cancel the timer in the dispose() method
+    _bannerAd?.dispose();
     super.dispose();
   }
 
@@ -121,7 +142,8 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
                 ),
                 title: Text('Impossible Reaction Time!',
                     textAlign: TextAlign.center),
-                content: Text('Please retry for fair competition',
+                content: Text(
+                    'Please return to the starting grid, incident under review. Scores below 150ms are not accepted.',
                     textAlign: TextAlign.center),
                 actions: [
                   Center(
@@ -177,8 +199,9 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
             ),
-            title: Text('INVALID TAP', textAlign: TextAlign.center),
-            content: Text('Wait for the lights to change color',
+            title: Text('FALSE START', textAlign: TextAlign.center),
+            content: Text(
+                'Wait for the lights to change color. Incident under review.',
                 textAlign: TextAlign.center),
             actions: [
               Center(
@@ -229,6 +252,13 @@ class _ReactionGameScreen1State extends State<ReactionGameScreen1> {
 
     return SafeArea(
       child: Scaffold(
+        bottomNavigationBar: (_bannerAd != null)
+            ? SizedBox(
+                width: _bannerAd!.size.width.toDouble(),
+                height: _bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: _bannerAd!),
+              )
+            : Text(""),
         appBar: AppBar(
           leading: BackButton(
             color: Colors.black,

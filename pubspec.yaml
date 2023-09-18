@@ -11,6 +11,7 @@ dependencies:
   audioplayers: ^4.1.0
   flutter:
     sdk: flutter
+  google_mobile_ads: ^3.0.0
   liquid_swipe: ^3.1.0
   path_provider: ^2.0.15
   share: ^2.0.4
@@ -29,3 +30,4 @@ flutter:
     - assets/beep_sound.mp3
     - assets/images/
     - assets/images/info_images/
+    - assets/images/logo.png
