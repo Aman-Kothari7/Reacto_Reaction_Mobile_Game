@@ -35,6 +35,24 @@ class GameApp extends StatelessWidget {
     return MobileAds.instance.initialize();
   }
 
+
+  // Future<InitializationStatus> _initGoogleMobileAds() {
+  //   // TODO: Initialize Google Mobile Ads SDK
+  // final requestConfiguration = RequestConfiguration(
+  //   tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
+  //   maxAdContentRating: MaxAdContentRating.g,
+  // );
+
+  // return MobileAds.instance.initialize(
+  //   RequestConfiguration(
+  //     requestConfiguration: <RequestConfiguration>[requestConfiguration],
+  //   ),
+  // );
+  // }
+
+  
+
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -57,6 +75,8 @@ class _MenuScreenState extends State<MenuScreen> {
   late final Function(int) updateBestReactionTime2;
   late final Function(int) updateBestReactionScore3;
   late final Function(int) updateBestReactionTime4;
+
+
 
   int? bestReactionTime;
   int? bestReactionTime2;
