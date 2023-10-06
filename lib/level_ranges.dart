@@ -35,18 +35,18 @@ const double levelOneMin = 0;
 const double levelOneMax = 1999;
 //f4
 const double levelTwoMin = 2000;
-const double levelTwoMax = 2599;
+const double levelTwoMax = 2699;
 //f3
-const double levelThreeMin = 2600;
-const double levelThreeMax = 3099;
+const double levelThreeMin = 2700;
+const double levelThreeMax = 3299;
 //f2
-const double levelFourMin = 3100;
-const double levelFourMax = 3599;
+const double levelFourMin = 3300;
+const double levelFourMax = 3799;
 //f1
-const double levelFiveMin = 3600;
-const double levelFiveMax = 3899;
+const double levelFiveMin = 3800;
+const double levelFiveMax = 3999;
 //C
-const double levelSixMin = 3900;
+const double levelSixMin = 4000;
 const double levelSixMax = 100000;
 
 //Base thresholds

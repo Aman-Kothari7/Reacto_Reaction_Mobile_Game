@@ -387,7 +387,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       height: 75,
                     ),
                     const Text('F4'),
-                    const Text('2000 - 2599'),
+                    const Text('2000 - 2699'),
                   ],
                 ),
                 //Level 3
@@ -403,7 +403,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       height: 75,
                     ),
                     const Text('F3'),
-                    const Text('2600 - 3099'),
+                    const Text('2700 - 3299'),
                   ],
                 ),
                 //Level 4
@@ -419,7 +419,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       height: 75,
                     ),
                     const Text('F2'),
-                    const Text('3100 - 3599'),
+                    const Text('3300 - 3799'),
                   ],
                 ),
                 //Level 4
@@ -435,7 +435,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       height: 75,
                     ),
                     const Text('F1'),
-                    const Text('3600 - 3899'),
+                    const Text('3800 - 3999'),
                   ],
                 ),
                 //Level 3
@@ -451,7 +451,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       height: 75,
                     ),
                     const Text('W'),
-                    const Text('3900 - 6000'),
+                    const Text('4000 - 6000'),
                   ],
                 ),
               ],
